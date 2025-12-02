@@ -1,4 +1,5 @@
 #include "common/Base.hpp"
+#include "common/util/iter.hpp"
 #include "common/util/string.hpp"
 
 #include <iostream>
@@ -6,7 +7,10 @@
 #include <regex>
 static std::regex LINE_SPLIT_REGEX {" +"};
 
-class Day1: public aoc::Base {
+using namespace aoc;
+namespace iter = util::iter;
+
+class Day1: public Base {
   public:
 	Day1() = default;
 
@@ -39,15 +43,16 @@ class Day1: public aoc::Base {
   private:
 	[[nodiscard]] static std::vector<std::pair<i32, i32>>
 	parseInput(const std::filesystem::path& path) {
-		const auto ret =
+		const auto guh =
 			readLines(path)
-			| std::ranges::views::transform([](const std::string& line) {
-				  return aoc::util::string::split(line, LINE_SPLIT_REGEX)
-						 | std::ranges::views::transform(
-							 [](const std::string& line) {
-								 return std::stoi(line);
-							 });
-			  });
+			| iter::map([](const std::string& line) {
+				  return util::string::split(line, LINE_SPLIT_REGEX)
+						 | iter::map([](const std::string& line) {
+							   return std::stoi(line);
+						   })
+						 | iter::toPair;
+			  })
+			| iter::collect;
 	}
 };
 

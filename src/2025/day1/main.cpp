@@ -1,8 +1,11 @@
 #include "common/Base.hpp"
+#include "common/util/iter.hpp"
 #include "common/util/math.hpp"
 
 #include <iostream>
 #include <ranges>
+
+namespace iter = aoc::util::iter;
 
 class Day1: public aoc::Base {
   public:
@@ -68,7 +71,7 @@ class Day1: public aoc::Base {
 	parseInput(const std::filesystem::path& path) {
 		const auto ret =
 			readLines(path)
-			| std::ranges::views::transform([](const std::string& line) {
+			| iter::map([](const std::string& line) {
 				  const i8 dir = line.at(0) == 'L' ? -1 : 1;
 				  const i32 num = std::stoi(line.substr(1));
 				  return dir * num;
@@ -79,7 +82,7 @@ class Day1: public aoc::Base {
 };
 
 int main() {
-	Day1{}.run();
+	Day1 {}.run();
 
 	return 0;
 }

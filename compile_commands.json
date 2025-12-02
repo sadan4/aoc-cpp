@@ -1,1 +1,68 @@
-[]
+[
+  {
+    "arguments": [
+      "/nix/store/vr15iyyykg9zai6fpgvhcgyw7gckl78w-gcc-wrapper-14.3.0/bin/g++",
+      "-I/home/meyer/dev/cpp/aoc-cpp/src",
+      "-I/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-src/include",
+      "-O3",
+      "-DNDEBUG",
+      "-std=c++23",
+      "-flto=auto",
+      "-fno-fat-lto-objects",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-c",
+      "-o",
+      "CMakeFiles/common.dir/common/util/iter.cpp.o",
+      "/home/meyer/dev/cpp/aoc-cpp/src/common/util/iter.cpp"
+    ],
+    "directory": "/home/meyer/dev/cpp/aoc-cpp/dist/src",
+    "file": "/home/meyer/dev/cpp/aoc-cpp/src/common/util/iter.cpp",
+    "output": "/home/meyer/dev/cpp/aoc-cpp/dist/src/CMakeFiles/common.dir/common/util/iter.cpp.o"
+  },
+  {
+    "arguments": [
+      "/nix/store/vr15iyyykg9zai6fpgvhcgyw7gckl78w-gcc-wrapper-14.3.0/bin/g++",
+      "-I/home/meyer/dev/cpp/aoc-cpp/src",
+      "-I/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-src/include",
+      "-O3",
+      "-DNDEBUG",
+      "-std=c++23",
+      "-flto=auto",
+      "-fno-fat-lto-objects",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-c",
+      "-o",
+      "CMakeFiles/2025_day1.dir/main.cpp.o",
+      "/home/meyer/dev/cpp/aoc-cpp/src/2025/day1/main.cpp"
+    ],
+    "directory": "/home/meyer/dev/cpp/aoc-cpp/dist/src/2025/day1",
+    "file": "/home/meyer/dev/cpp/aoc-cpp/src/2025/day1/main.cpp",
+    "output": "/home/meyer/dev/cpp/aoc-cpp/dist/src/2025/day1/CMakeFiles/2025_day1.dir/main.cpp.o"
+  },
+  {
+    "arguments": [
+      "/nix/store/vr15iyyykg9zai6fpgvhcgyw7gckl78w-gcc-wrapper-14.3.0/bin/g++",
+      "-I/home/meyer/dev/cpp/aoc-cpp/src",
+      "-I/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-src/include",
+      "-O3",
+      "-DNDEBUG",
+      "-std=c++23",
+      "-flto=auto",
+      "-fno-fat-lto-objects",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-c",
+      "-o",
+      "CMakeFiles/2024_day1.dir/main.cpp.o",
+      "/home/meyer/dev/cpp/aoc-cpp/src/2024/day1/main.cpp"
+    ],
+    "directory": "/home/meyer/dev/cpp/aoc-cpp/dist/src/2024/day1",
+    "file": "/home/meyer/dev/cpp/aoc-cpp/src/2024/day1/main.cpp",
+    "output": "/home/meyer/dev/cpp/aoc-cpp/dist/src/2024/day1/CMakeFiles/2024_day1.dir/main.cpp.o"
+  }
+]
