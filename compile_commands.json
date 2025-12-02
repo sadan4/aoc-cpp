@@ -1,0 +1,148 @@
+[
+  {
+    "arguments": [
+      "/nix/store/sqlnjj8c3n3si3sjnadhdbcwgrk97g2w-clang-wrapper-21.1.2/bin/clang++",
+      "-I/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-src/include",
+      "-c",
+      "-o",
+      "CMakeFiles/fmt.dir/src/format.cc.o",
+      "/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-src/src/format.cc"
+    ],
+    "directory": "/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-build",
+    "file": "/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-src/src/format.cc",
+    "output": "/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-build/CMakeFiles/fmt.dir/src/format.cc.o"
+  },
+  {
+    "arguments": [
+      "/nix/store/sqlnjj8c3n3si3sjnadhdbcwgrk97g2w-clang-wrapper-21.1.2/bin/clang++",
+      "-I/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-src/include",
+      "-c",
+      "-o",
+      "CMakeFiles/fmt.dir/src/os.cc.o",
+      "/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-src/src/os.cc"
+    ],
+    "directory": "/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-build",
+    "file": "/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-src/src/os.cc",
+    "output": "/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-build/CMakeFiles/fmt.dir/src/os.cc.o"
+  },
+  {
+    "arguments": [
+      "/nix/store/sqlnjj8c3n3si3sjnadhdbcwgrk97g2w-clang-wrapper-21.1.2/bin/clang++",
+      "-I/home/meyer/dev/cpp/aoc-cpp/src",
+      "-I/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-src/include",
+      "-O3",
+      "-DNDEBUG",
+      "-std=c++23",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-c",
+      "-o",
+      "CMakeFiles/common.dir/common/util/math.cpp.o",
+      "/home/meyer/dev/cpp/aoc-cpp/src/common/util/math.cpp"
+    ],
+    "directory": "/home/meyer/dev/cpp/aoc-cpp/dist/src",
+    "file": "/home/meyer/dev/cpp/aoc-cpp/src/common/util/math.cpp",
+    "output": "/home/meyer/dev/cpp/aoc-cpp/dist/src/CMakeFiles/common.dir/common/util/math.cpp.o"
+  },
+  {
+    "arguments": [
+      "/nix/store/sqlnjj8c3n3si3sjnadhdbcwgrk97g2w-clang-wrapper-21.1.2/bin/clang++",
+      "-I/home/meyer/dev/cpp/aoc-cpp/src",
+      "-I/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-src/include",
+      "-O3",
+      "-DNDEBUG",
+      "-std=c++23",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-c",
+      "-o",
+      "CMakeFiles/common.dir/common/util/time.cpp.o",
+      "/home/meyer/dev/cpp/aoc-cpp/src/common/util/time.cpp"
+    ],
+    "directory": "/home/meyer/dev/cpp/aoc-cpp/dist/src",
+    "file": "/home/meyer/dev/cpp/aoc-cpp/src/common/util/time.cpp",
+    "output": "/home/meyer/dev/cpp/aoc-cpp/dist/src/CMakeFiles/common.dir/common/util/time.cpp.o"
+  },
+  {
+    "arguments": [
+      "/nix/store/sqlnjj8c3n3si3sjnadhdbcwgrk97g2w-clang-wrapper-21.1.2/bin/clang++",
+      "-I/home/meyer/dev/cpp/aoc-cpp/src",
+      "-I/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-src/include",
+      "-O3",
+      "-DNDEBUG",
+      "-std=c++23",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-c",
+      "-o",
+      "CMakeFiles/common.dir/common/util/string.cpp.o",
+      "/home/meyer/dev/cpp/aoc-cpp/src/common/util/string.cpp"
+    ],
+    "directory": "/home/meyer/dev/cpp/aoc-cpp/dist/src",
+    "file": "/home/meyer/dev/cpp/aoc-cpp/src/common/util/string.cpp",
+    "output": "/home/meyer/dev/cpp/aoc-cpp/dist/src/CMakeFiles/common.dir/common/util/string.cpp.o"
+  },
+  {
+    "arguments": [
+      "/nix/store/sqlnjj8c3n3si3sjnadhdbcwgrk97g2w-clang-wrapper-21.1.2/bin/clang++",
+      "-I/home/meyer/dev/cpp/aoc-cpp/src",
+      "-I/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-src/include",
+      "-O3",
+      "-DNDEBUG",
+      "-std=c++23",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-c",
+      "-o",
+      "CMakeFiles/common.dir/common/util/fs.cpp.o",
+      "/home/meyer/dev/cpp/aoc-cpp/src/common/util/fs.cpp"
+    ],
+    "directory": "/home/meyer/dev/cpp/aoc-cpp/dist/src",
+    "file": "/home/meyer/dev/cpp/aoc-cpp/src/common/util/fs.cpp",
+    "output": "/home/meyer/dev/cpp/aoc-cpp/dist/src/CMakeFiles/common.dir/common/util/fs.cpp.o"
+  },
+  {
+    "arguments": [
+      "/nix/store/sqlnjj8c3n3si3sjnadhdbcwgrk97g2w-clang-wrapper-21.1.2/bin/clang++",
+      "-I/home/meyer/dev/cpp/aoc-cpp/src",
+      "-I/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-src/include",
+      "-O3",
+      "-DNDEBUG",
+      "-std=c++23",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-c",
+      "-o",
+      "CMakeFiles/common.dir/common/Base.cpp.o",
+      "/home/meyer/dev/cpp/aoc-cpp/src/common/Base.cpp"
+    ],
+    "directory": "/home/meyer/dev/cpp/aoc-cpp/dist/src",
+    "file": "/home/meyer/dev/cpp/aoc-cpp/src/common/Base.cpp",
+    "output": "/home/meyer/dev/cpp/aoc-cpp/dist/src/CMakeFiles/common.dir/common/Base.cpp.o"
+  },
+  {
+    "arguments": [
+      "/nix/store/sqlnjj8c3n3si3sjnadhdbcwgrk97g2w-clang-wrapper-21.1.2/bin/clang++",
+      "-I/home/meyer/dev/cpp/aoc-cpp/src",
+      "-I/home/meyer/dev/cpp/aoc-cpp/dist/_deps/fmt-src/include",
+      "-O3",
+      "-DNDEBUG",
+      "-std=c++23",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-c",
+      "-o",
+      "CMakeFiles/day1.dir/main.cpp.o",
+      "/home/meyer/dev/cpp/aoc-cpp/src/2025/day1/main.cpp"
+    ],
+    "directory": "/home/meyer/dev/cpp/aoc-cpp/dist/src/2025/day1",
+    "file": "/home/meyer/dev/cpp/aoc-cpp/src/2025/day1/main.cpp",
+    "output": "/home/meyer/dev/cpp/aoc-cpp/dist/src/2025/day1/CMakeFiles/day1.dir/main.cpp.o"
+  }
+]

@@ -1,1 +1,26 @@
 .direnv
+
+# Environment files with secrets
+.env.json
+
+# Build directory
+dist/
+build/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Compiled files
+*.o
+*.a
+*.so
+*.exe
+
+# Input files (personal puzzle inputs)
+**/input.txt
+!src/2025/day1/input.txt
+.cache/clangd/index

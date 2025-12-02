@@ -1,0 +1,40 @@
+# Generated from CLion Inspection settings
+---
+Checks: '-*,
+google-*,
+-google-readability-casting,
+-google-build-using-namespace,
+-google-runtime-int,
+-google-readability-todo,
+-google-build-namespaces,
+bugprone-*,
+-bugprone-narrowing-conversions,
+clang-analyzer-*,
+concurrency-*,
+cppcoreguidelines-*,
+-cppcoreguidelines-avoid-magic-numbers,
+-cppcoreguidelines-non-private-member-variables-in-classes,
+-cppcoreguidelines-pro-type-reinterpret-cast,
+-cppcoreguidelines-pro-type-cstyle-cast,
+-cppcoreguidelines-narrowing-conversions,
+-cppcoreguidelines-avoid-c-arrays,
+-cppcoreguidelines-avoid-non-const-global-variables,
+misc-*,
+-misc-non-private-member-variables-in-classes,
+modernize-*,
+-modernize-use-trailing-return-type,
+-modernize-avoid-c-arrays,
+performance-*,
+portability-*,
+readability-*,
+-readability-implicit-bool-conversion,
+-readability-magic-numbers,
+-readability-qualified-auto'
+CheckOptions:
+  bugprone-lambda-function-name.IgnoreMacros: true
+  cppcoreguidelines-avoid-non-const-global-variables.AllowInternalLinkage: true
+  readability-identifier-length.IgnoredVariableNames: "^_.*$"
+  readability-identifier-length.IgnoredParameterNames: "^_.*$"
+  readability-identifier-length.IgnoredExceptionVariableNames: "^_.*|e$"
+  readability-simplify-boolean-expr.IgnoreMacros: true
+  bugprone-unused-return-value.AllowCastToVoid: true
