@@ -8,5 +8,9 @@ target_include_directories(common PUBLIC
 
 target_link_libraries(common PUBLIC fmt::fmt)
 
+set_target_properties(common PROPERTIES
+  INTERPROCEDURAL_OPTIMIZATION TRUE
+)
+
 # Year solutions
 add_subdirectory(2025)

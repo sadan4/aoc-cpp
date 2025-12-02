@@ -22,6 +22,16 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
+# Enable Link Time Optimization
+include(CheckIPOSupported)
+check_ipo_supported(RESULT ipo_supported OUTPUT ipo_error)
+if(ipo_supported)
+  set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+  message(STATUS "IPO/LTO enabled")
+else()
+  message(WARNING "IPO/LTO not supported: ${ipo_error}")
+endif()
+
 # Compiler warnings
 add_compile_options(-Wall -Wextra -Wpedantic)
 

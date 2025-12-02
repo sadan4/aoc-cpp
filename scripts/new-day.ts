@@ -203,6 +203,10 @@ int main() {
 )
 
 target_link_libraries(day${dayStr} PRIVATE common fmt::fmt)
+
+set_target_properties(day${dayStr} PROPERTIES
+  INTERPROCEDURAL_OPTIMIZATION TRUE
+)
 `;
   writeFileSync(join(dayDir, 'CMakeLists.txt'), cmakeBuildContent);
   console.log(`Created ${dayDir}/CMakeLists.txt`);

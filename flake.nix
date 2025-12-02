@@ -29,7 +29,7 @@
       {
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
-            clang
+            gcc
             clang-tools
             meson
             ninja
@@ -50,8 +50,6 @@
           ];
           shellHook = ''
               #shell config here
-              export CC=clang
-              export CXX=clang++
           '';
         };
       }
