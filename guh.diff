@@ -1,0 +1,173 @@
+commit 5a791199c943fe93507c00b26cced31304da0e40
+Author: sadan <117494111+sadan4@users.noreply.github.com>
+Date:   Mon Dec 1 23:51:43 2025 -0500
+
+    work-thing
+
+diff --git a/scripts/new-day.ts b/scripts/new-day.ts
+index dcbeddb..a5b8755 100755
+--- a/scripts/new-day.ts
++++ b/scripts/new-day.ts
+@@ -198,13 +198,13 @@ int main() {
+   console.log(`Created ${dayDir}/main.cpp`);
+ 
+   // Create CMakeLists.txt
+-  const cmakeBuildContent = `add_executable(day${dayStr}
++  const cmakeBuildContent = `add_executable(${year}_day${dayStr}
+   main.cpp
+ )
+ 
+-target_link_libraries(day${dayStr} PRIVATE common fmt::fmt)
++target_link_libraries(${year}_day${dayStr} PRIVATE common fmt::fmt)
+ 
+-set_target_properties(day${dayStr} PROPERTIES
++set_target_properties(${year}_day${dayStr} PROPERTIES
+   INTERPROCEDURAL_OPTIMIZATION TRUE
+ )
+ `;
+@@ -235,7 +235,7 @@ set_target_properties(day${dayStr} PROPERTIES
+   console.log(`  1. Add your puzzle input to ${dayDir}/input.txt`);
+   console.log(`  2. Implement part1() and part2() in ${dayDir}/main.cpp`);
+   console.log(`  3. Build: cmake --build build`);
+-  console.log(`  4. Run: ./build/src/${year}/day${dayStr}/day${dayStr} ${dayDir}/input.txt`);
++  console.log(`  4. Run: ./build/src/${year}/day${dayStr}/${year}_day${dayStr} ${dayDir}/input.txt`);
+ }
+ 
+ const { day, year } = getArgs();
+diff --git a/src/2024/CMakeLists.txt b/src/2024/CMakeLists.txt
+new file mode 100644
+index 0000000..193a676
+--- /dev/null
++++ b/src/2024/CMakeLists.txt
+@@ -0,0 +1,2 @@
++# Advent of Code 2024
++add_subdirectory(day1)
+diff --git a/src/2024/day1/CMakeLists.txt b/src/2024/day1/CMakeLists.txt
+new file mode 100644
+index 0000000..ba9875b
+--- /dev/null
++++ b/src/2024/day1/CMakeLists.txt
+@@ -0,0 +1,9 @@
++add_executable(2024_day1
++  main.cpp
++)
++
++target_link_libraries(2024_day1 PRIVATE common fmt::fmt)
++
++set_target_properties(2024_day1 PROPERTIES
++  INTERPROCEDURAL_OPTIMIZATION TRUE
++)
+diff --git a/src/2024/day1/main.cpp b/src/2024/day1/main.cpp
+new file mode 100644
+index 0000000..605eb1b
+--- /dev/null
++++ b/src/2024/day1/main.cpp
+@@ -0,0 +1,60 @@
++#include "common/Base.hpp"
++#include "common/util/string.hpp"
++
++#include <iostream>
++#include <ranges>
++#include <regex>
++static std::regex LINE_SPLIT_REGEX {" +"};
++
++class Day1: public aoc::Base {
++  public:
++	Day1() = default;
++
++	[[nodiscard]] int day() const override {
++		return 1;
++	}
++
++	[[nodiscard]] int year() const override {
++		return 24;
++	}
++
++	[[nodiscard]] std::optional<i64> part1Expected() const override {
++		return 936063;
++	}
++
++	[[nodiscard]] std::optional<i64> part2Expected() const override {
++		return 23150395;
++	}
++
++	[[nodiscard]] i64 solvePart1() const override {
++		// TODO: Implement part 1
++		return 0;
++	}
++
++	[[nodiscard]] i64 solvePart2() const override {
++		// TODO: Implement part 2
++		return 0;
++	}
++
++  private:
++	[[nodiscard]] static std::vector<std::pair<i32, i32>>
++	parseInput(const std::filesystem::path& path) {
++		const auto ret =
++			readLines(path)
++			| std::ranges::views::transform([](const std::string& line) {
++				  return aoc::util::string::split(line, LINE_SPLIT_REGEX)
++						 | std::ranges::views::transform(
++							 [](const std::string& line) {
++								 return std::stoi(line);
++							 });
++			  });
++	}
++};
++
++int main() {
++	Day1 solution;
++
++	solution.run();
++
++	return 0;
++}
+diff --git a/src/2025/day1/CMakeLists.txt b/src/2025/day1/CMakeLists.txt
+index 8ccbff7..ff48fa2 100644
+--- a/src/2025/day1/CMakeLists.txt
++++ b/src/2025/day1/CMakeLists.txt
+@@ -1,9 +1,9 @@
+-add_executable(day1
++add_executable(2025_day1
+   main.cpp
+ )
+ 
+-target_link_libraries(day1 PRIVATE common fmt::fmt)
++target_link_libraries(2025_day1 PRIVATE common fmt::fmt)
+ 
+-set_target_properties(day1 PROPERTIES
++set_target_properties(2025_day1 PROPERTIES
+   INTERPROCEDURAL_OPTIMIZATION TRUE
+ )
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 74417c9..262c5ed 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -13,4 +13,5 @@ set_target_properties(common PROPERTIES
+ )
+ 
+ # Year solutions
++add_subdirectory(2024)
+ add_subdirectory(2025)
+diff --git a/src/common/util/PairView.cpp b/src/common/util/PairView.cpp
+new file mode 100644
+index 0000000..49eff8f
+--- /dev/null
++++ b/src/common/util/PairView.cpp
+@@ -0,0 +1 @@
++#include "PairView.hpp"
+diff --git a/src/common/util/PairView.hpp b/src/common/util/PairView.hpp
+new file mode 100644
+index 0000000..fea4ec0
+--- /dev/null
++++ b/src/common/util/PairView.hpp
+@@ -0,0 +1,8 @@
++#pragma once
++#include <ranges>
++
++template <typename T>
++class PairView : public std::ranges::view_interface<PairView<T>> {
++	PairView() = default;
++private:
++};

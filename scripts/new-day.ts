@@ -198,13 +198,13 @@ int main() {
   console.log(`Created ${dayDir}/main.cpp`);
 
   // Create CMakeLists.txt
-  const cmakeBuildContent = `add_executable(day${dayStr}
+  const cmakeBuildContent = `add_executable(${year}_day${dayStr}
   main.cpp
 )
 
-target_link_libraries(day${dayStr} PRIVATE common fmt::fmt)
+target_link_libraries(${year}_day${dayStr} PRIVATE common fmt::fmt)
 
-set_target_properties(day${dayStr} PROPERTIES
+set_target_properties(${year}_day${dayStr} PROPERTIES
   INTERPROCEDURAL_OPTIMIZATION TRUE
 )
 `;
@@ -235,7 +235,7 @@ set_target_properties(day${dayStr} PROPERTIES
   console.log(`  1. Add your puzzle input to ${dayDir}/input.txt`);
   console.log(`  2. Implement part1() and part2() in ${dayDir}/main.cpp`);
   console.log(`  3. Build: cmake --build build`);
-  console.log(`  4. Run: ./build/src/${year}/day${dayStr}/day${dayStr} ${dayDir}/input.txt`);
+  console.log(`  4. Run: ./build/src/${year}/day${dayStr}/${year}_day${dayStr} ${dayDir}/input.txt`);
 }
 
 const { day, year } = getArgs();

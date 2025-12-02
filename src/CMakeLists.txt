@@ -13,4 +13,5 @@ set_target_properties(common PROPERTIES
 )
 
 # Year solutions
+add_subdirectory(2024)
 add_subdirectory(2025)
