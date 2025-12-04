@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-
 namespace aoc::util::string {
 	namespace {
 		constexpr auto whitespaceChars = " \t\n\r";

@@ -8,16 +8,29 @@
 #include <string>
 
 namespace aoc::util::fs {
-	std::filesystem::path projectRoot() {
-		const auto cwd = std::filesystem::current_path();
-		const auto pathA = cwd / "flake.nix";
-		const auto pathB = cwd / "src";
-		if (!(exists(pathA) && exists(pathB))) {
-			throw std::runtime_error(
-				"Please run this from the root folder. The root folder "
-				"should have the `src` dir and a `flake.nix`.");
+	namespace {
+		bool isProjectRoot(const std::filesystem::path& path) {
+			const auto pathA = path / "flake.nix";
+			const auto pathB = path / "src";
+			return exists(pathA) && exists(pathB);
 		}
-		return cwd;
+	} // namespace
+
+	std::filesystem::path projectRoot() {
+		std::filesystem::path path = std::filesystem::current_path();
+		while (true) {
+			if (isProjectRoot(path)) {
+				break;
+			}
+			if (path.has_parent_path() && !isRootPath(path.parent_path())) {
+				path = path.parent_path();
+			} else {
+				throw std::runtime_error(fmt::format(
+					"failed to find the project root. started at {}",
+					std::filesystem::current_path().string()));
+			}
+		}
+		return path;
 	}
 
 	std::string read(const std::filesystem::path& path) {
@@ -35,5 +48,9 @@ namespace aoc::util::fs {
 		out << inputStream.rdbuf();
 		const auto ret = out.str();
 		return ret;
+	}
+
+	bool isRootPath(const std::filesystem::path& path) noexcept {
+		return path.has_root_path() && path == path.root_path();
 	}
 } // namespace aoc::util::fs

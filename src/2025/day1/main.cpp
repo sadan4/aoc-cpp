@@ -6,6 +6,7 @@
 
 #include <cstdlib>
 #include <optional>
+#include <print>
 #include <ranges>
 #include <string>
 #include <vector>
@@ -36,6 +37,7 @@ class Day1: public Base {
 		i64 cur = 50;
 		i64 zeroCount = 0;
 		for (const i32 step : parseInput(input)) {
+			std::println("cur=`{}`, step=`{}`", cur, step);
 			cur = (cur + step) % 100;
 			if (cur == 0) {
 				zeroCount++;
@@ -61,8 +63,7 @@ class Day1: public Base {
 			} else if (now / 100 != old / 100) {
 				zeroCount++;
 			} else if (now / 100 == 0
-					   && util::math::sign(now)
-							  != util::math::sign(old)) {
+					   && util::math::sign(now) != util::math::sign(old)) {
 				zeroCount++;
 			}
 		}
@@ -70,8 +71,8 @@ class Day1: public Base {
 	}
 
   private:
-	[[nodiscard]] static std::vector<i32>
-	parseInput(const std::string& input) {
+	[[nodiscard]] static std::vector<i32> parseInput(const std::string& input) {
+		std::println("input=`{}`", input);
 		const auto ret =
 			util::string::split(input, util::fs::eol())
 			| std::ranges::views::transform([](const std::string& line) {
@@ -85,7 +86,7 @@ class Day1: public Base {
 };
 
 int main() {
-	Day1{}.run();
+	Day1 {}.run();
 
 	return 0;
 }
