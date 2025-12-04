@@ -1,6 +1,8 @@
 #pragma once
 #include <filesystem>
+#include <string>
 #include <vector>
+#include <optional>
 #include "util/types.hpp"
 
 namespace aoc {

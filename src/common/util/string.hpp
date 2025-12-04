@@ -1,7 +1,9 @@
 #pragma once
+#include <concepts>
 #include <ranges>
 #include <regex>
 #include <string>
+#include <vector>
 
 namespace aoc::util::string {
 	template<typename T>

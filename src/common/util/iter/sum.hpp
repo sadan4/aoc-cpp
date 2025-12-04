@@ -16,7 +16,7 @@ namespace aoc::util::iter {
 
 				ValueType sum {};
 
-				for (const ValueType& val : range) {
+				for (const ValueType& val : std::forward<R>(range)) {
 					sum += val;
 				}
 
@@ -32,7 +32,7 @@ namespace aoc::util::iter {
 
 			template<std::ranges::range R>
 			[[nodiscard]] constexpr friend auto operator|(R&& range,
-														  const SumImpl&) {
+														  const SumImpl& /*unused*/) {
 				return impl(std::forward<R>(range));
 			}
 		};

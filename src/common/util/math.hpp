@@ -1,5 +1,6 @@
 #pragma once
 #include "types.hpp"
+#include <limits>
 
 namespace aoc::util::math {
 	constexpr i8 sign(i8 val) {

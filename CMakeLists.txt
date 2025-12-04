@@ -4,6 +4,7 @@ message(STATUS "Using CMAKE_CXX_COMPILER_AR: ${CMAKE_CXX_COMPILER_AR}")
 message(STATUS "Using CMAKE_CXX_COMPILER_RANLIB: ${CMAKE_CXX_COMPILER_RANLIB}")
 cmake_minimum_required(VERSION 3.20)
 project(advent-of-code VERSION 0.1.0 LANGUAGES CXX)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Include FetchContent module
 include(FetchContent)

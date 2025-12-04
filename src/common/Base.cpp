@@ -3,9 +3,14 @@
 #include "util/fs.hpp"
 #include "util/string.hpp"
 #include "util/time.hpp"
+#include "util/types.hpp"
 
+#include <exception>
 #include <filesystem>
 #include <fmt/core.h>
+#include <optional>
+#include <string>
+#include <vector>
 
 namespace aoc {
 

@@ -1,25 +1,32 @@
 #include "common/Base.hpp"
-#include "common/util/fs.hpp"
 #include "common/util/iter/sum.hpp"
 #include "common/util/math.hpp"
 #include "common/util/string.hpp"
+#include "common/util/types.hpp"
 
-#include <algorithm>
-#include <iostream>
+#include <optional>
+#include <print>
 #include <ranges>
+#include <string>
 
 using namespace aoc;
 namespace v = std::ranges::views;
 
 class Day2: public Base {
 	[[nodiscard]] static auto parseInput(const std::string& input) {
+		std::println("input=`{}`", input);
 		return util::string::split(input, ',')
 			   | v::transform([](std::string& rangeStr) {
 					 util::string::trim(rangeStr);
 					 const auto split = util::string::split(rangeStr, '-');
-					 const u64 start = std::stoull(split.at(0));
-					 const u64 end = std::stoull(split.at(1));
-					 return v::iota(start, end + 1);
+					 try {
+						 const u64 start = std::stoull(split.at(0));
+						 const u64 end = std::stoull(split.at(1));
+						 return v::iota(start, end + 1);
+					 } catch (...) {
+						 std::println("rangeStr=`{}`", rangeStr);
+						 throw;
+					 }
 				 })
 			   | v::join;
 	}
@@ -59,7 +66,8 @@ class Day2: public Base {
 			   | util::iter::sum;
 	}
 
-	[[nodiscard]] i64 solvePart2([[maybe_unused]] const std::string& _) const override {
+	[[nodiscard]] i64
+	solvePart2([[maybe_unused]] const std::string& _) const override {
 		// TODO: Implement part 2
 		return 0;
 	}

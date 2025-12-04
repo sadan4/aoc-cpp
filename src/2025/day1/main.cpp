@@ -2,9 +2,13 @@
 #include "common/util/fs.hpp"
 #include "common/util/math.hpp"
 #include "common/util/string.hpp"
+#include "common/util/types.hpp"
 
-#include <iostream>
+#include <cstdlib>
+#include <optional>
 #include <ranges>
+#include <string>
+#include <vector>
 
 using namespace aoc;
 
