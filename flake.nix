@@ -30,7 +30,6 @@
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             gcc
-            clang-tools
             meson
             ninja
             bear
