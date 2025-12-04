@@ -175,12 +175,12 @@ class Day${dayStr} : public aoc::Base {
         return std::nullopt;
     }
 
-    [[nodiscard]] i64 solvePart1() const override {
+    [[nodiscard]] i64 solvePart1(const std::string& input) const override {
         // TODO: Implement part 1
         return 0;
     }
 
-    [[nodiscard]] i64 solvePart2() const override {
+    [[nodiscard]] i64 solvePart2(const std::string& input) const override {
         // TODO: Implement part 2
         return 0;
     }

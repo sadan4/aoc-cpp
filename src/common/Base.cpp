@@ -22,14 +22,6 @@ namespace aoc {
 		return std::nullopt;
 	}
 
-	std::vector<std::string> Base::readLines1() const {
-		return readLines(part1FileName());
-	}
-
-	std::vector<std::string> Base::readLines2() const {
-		return readLines(part2FileName());
-	}
-
 	std::filesystem::path Base::part1FileName() const {
 		return baseDir() / "input.txt";
 	}
@@ -42,8 +34,9 @@ namespace aoc {
 		fmt::println("Running year {}, day {}", year(), day());
 		try {
 			i64 p1Result {};
+			const std::string p1Input = read(part1FileName());
 			const auto p1Time =
-				util::time::time([&] { p1Result = solvePart1(); });
+				util::time::time([&] { p1Result = solvePart1(p1Input); });
 			const auto p1Expected = part1Expected();
 			fmt::println("Part1 Result: {}", p1Result);
 			fmt::println("Part1 Time: {} ms", p1Time.count() / 1'000'000.0);
@@ -65,8 +58,9 @@ namespace aoc {
 		}
 		try {
 			i64 p2Result{};
+			const std::string p2Input = read(part2FileName());
 			const auto p2Time =
-				util::time::time([&] { p2Result = solvePart2(); });
+				util::time::time([&] { p2Result = solvePart2(p2Input); });
 			const auto p2Expected = part2Expected();
 			fmt::println("Part2 Result: {}", p2Result);
 			fmt::println("Part2 Time: {} ms", p2Time.count() / 1'000'000.0);
@@ -89,9 +83,13 @@ namespace aoc {
 		fmt::println("Ran year {}, day {}", year(), day());
 	}
 
-	std::vector<std::string> Base::readLines(std::filesystem::path path) {
-		std::string content = util::fs::read(path);
-		util::string::trim(content);
-		return util::string::split(content, util::fs::eol());
+	std::vector<std::string> Base::readLines(const std::filesystem::path& path) {
+		return util::string::split(read(path), util::fs::eol());
+	}
+
+	std::string Base::read(const std::filesystem::path& path) {
+		auto str = util::fs::read(path);
+		util::string::trim(str);
+		return str;
 	}
 } // namespace aoc

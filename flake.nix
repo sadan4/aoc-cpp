@@ -49,7 +49,11 @@
             '')
           ];
           shellHook = ''
-              #shell config here
+              export RANLIB="${pkgs.gcc}/bin/ranlib"
+              export AR="${pkgs.gcc}/bin/ar"
+              ln -sf ${pkgs.cmake}/bin/cmake .idea/cmake-link
+              ln -sf ${pkgs.gcc}/bin/gcc .idea/cc-link
+              ln -sf ${pkgs.gcc}/bin/g++ .idea/cxx-link
           '';
         };
       }

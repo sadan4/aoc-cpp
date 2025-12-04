@@ -37,6 +37,10 @@ namespace aoc::util::string {
 	};
 
 	[[nodiscard]] std::vector<std::string>
+	split(const std::string& str, char delimiter,
+		  const SplitOptions& opts = {}) noexcept;
+
+	[[nodiscard]] std::vector<std::string>
 	split(const std::string& str, const std::string& delimiter,
 		  const SplitOptions& opts = {}) noexcept;
 
