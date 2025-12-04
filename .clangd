@@ -1,0 +1,15 @@
+Diagnostics:
+  UnusedIncludes: Strict
+  MissingIncludes: Strict
+CompileFlags:
+  CompilationDatabase: ./dist
+Index:
+  StandardLibrary: true
+Style:
+  AngledHeaders: ["fmt/.*"]
+Completion:
+  ArgumentLists: Delimiters
+InlayHints:
+  BlockEnd: true
+Hover:
+  ShowAKA: true

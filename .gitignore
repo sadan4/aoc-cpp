@@ -21,6 +21,7 @@ build/
 *.exe
 
 # Input files (personal puzzle inputs)
-**/input.txt
-!src/2025/day1/input.txt
 .cache/clangd/index
+cmake-build-debug
+compile_commands.json
+.flake-env

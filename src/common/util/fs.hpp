@@ -1,22 +1,19 @@
 #pragma once
 #include <filesystem>
+#include <string>
 
-namespace aoc {
-	namespace util {
-		namespace fs {
-			using std::filesystem::exists;
-			std::filesystem::path projectRoot();
-			std::string read(const std::filesystem::path& path);
+namespace aoc::util::fs {
+	using std::filesystem::exists;
+	std::filesystem::path projectRoot();
+	std::string read(const std::filesystem::path& path);
 
-			constexpr std::string eol() {
+	constexpr std::string eol() {
 #ifdef _WIN32
-				return "\r\n";
+		return "\r\n";
 #elifdef __linux__
-				return "\n";
+		return "\n";
 #else
 #error "Unknown platform"
 #endif
-			}
-		} // namespace fs
-	} // namespace util
-} // namespace aoc
+	}
+} // namespace aoc::util::fs

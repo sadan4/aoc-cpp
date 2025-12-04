@@ -1,11 +1,19 @@
 #include "common/Base.hpp"
 #include "common/util/iter.hpp"
+#include "common/util/fs.hpp"
 #include "common/util/math.hpp"
+#include "common/util/string.hpp"
+#include "common/util/types.hpp"
 
-#include <iostream>
+#include <cstdlib>
+#include <optional>
 #include <ranges>
+#include <string>
+#include <vector>
 
-namespace iter = aoc::util::iter;
+
+using namespace aoc;
+namespace iter = util::iter;
 
 class Day1: public aoc::Base {
   public:
@@ -27,11 +35,10 @@ class Day1: public aoc::Base {
 		return 6289;
 	}
 
-	[[nodiscard]] i64 solvePart1() const override {
-		const auto input = parseInput(part1FileName());
+	[[nodiscard]] i64 solvePart1(const std::string& input) const override {
 		i64 cur = 50;
 		i64 zeroCount = 0;
-		for (const i32 step : input) {
+		for (const i32 step : parseInput(input)) {
 			cur = (cur + step) % 100;
 			if (cur == 0) {
 				zeroCount++;
@@ -40,15 +47,14 @@ class Day1: public aoc::Base {
 		return zeroCount;
 	}
 
-	[[nodiscard]] i64 solvePart2() const override {
+	[[nodiscard]] i64 solvePart2(const std::string& input) const override {
 		// TODO: Implement part 2
-		const auto input = parseInput(part2FileName());
 		i64 cur = 50;
 		i64 zeroCount = 0;
-		for (const i32 step : input) {
-			i64 old = cur;
+		for (const i32 step : parseInput(input)) {
+			const i64 old = cur;
 			cur += step % 100;
-			i64 now = cur;
+			const i64 now = cur;
 			zeroCount += std::abs(step) / 100;
 			if (old % 100 == 0) {
 				continue;
@@ -58,8 +64,8 @@ class Day1: public aoc::Base {
 			} else if (now / 100 != old / 100) {
 				zeroCount++;
 			} else if (now / 100 == 0
-					   && aoc::util::math::sign(now)
-							  != aoc::util::math::sign(old)) {
+					   && util::math::sign(now)
+							  != util::math::sign(old)) {
 				zeroCount++;
 			}
 		}
@@ -68,10 +74,10 @@ class Day1: public aoc::Base {
 
   private:
 	[[nodiscard]] static std::vector<i32>
-	parseInput(const std::filesystem::path& path) {
+	parseInput(const std::string& input) {
 		const auto ret =
-			readLines(path)
-			| iter::map([](const std::string& line) {
+			util::string::split(input, util::fs::eol())
+			| std::ranges::views::transform([](const std::string& line) {
 				  const i8 dir = line.at(0) == 'L' ? -1 : 1;
 				  const i32 num = std::stoi(line.substr(1));
 				  return dir * num;

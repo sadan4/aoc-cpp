@@ -1,7 +1,9 @@
 #pragma once
+#include <concepts>
 #include <ranges>
 #include <regex>
 #include <string>
+#include <vector>
 
 namespace aoc::util::string {
 	template<typename T>
@@ -35,6 +37,10 @@ namespace aoc::util::string {
 		std::regex_constants::match_flag_type flags =
 			std::regex_constants::match_default;
 	};
+
+	[[nodiscard]] std::vector<std::string>
+	split(const std::string& str, char delimiter,
+		  const SplitOptions& opts = {}) noexcept;
 
 	[[nodiscard]] std::vector<std::string>
 	split(const std::string& str, const std::string& delimiter,

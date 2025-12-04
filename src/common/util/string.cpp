@@ -1,10 +1,20 @@
 #include "string.hpp"
 
+#include <regex>
+#include <string>
+#include <vector>
+
+
 namespace aoc::util::string {
 	namespace {
-		constexpr std::string whitespaceChars = " \t\n\r";
+		constexpr auto whitespaceChars = " \t\n\r";
 		constexpr auto npos = std::string::npos;
 	} // namespace
+
+	std::vector<std::string> split(const std::string& str, char delimiter,
+								   const SplitOptions& opts) noexcept {
+		return split(str, std::string {delimiter}, opts);
+	}
 
 	[[nodiscard]] std::vector<std::string>
 	split(const std::string& str, const std::string& delimiter,

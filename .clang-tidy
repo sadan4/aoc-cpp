@@ -27,6 +27,7 @@ modernize-*,
 performance-*,
 portability-*,
 readability-*,
+-readability-identifier-length,
 -readability-implicit-bool-conversion,
 -readability-magic-numbers,
 -readability-qualified-auto'
