@@ -36,24 +36,24 @@
             bear
             fmt
             (writeShellScriptBin "build" ''
-                set -x
-                ${pkgs.bear}/bin/bear -- ${pkgs.gnumake}/bin/make -j -C dist
+              set -x
+              ${pkgs.bear}/bin/bear -- ${pkgs.gnumake}/bin/make -j -C dist
             '')
             (writeShellScriptBin "configure" ''
-                set -x
-                ${pkgs.cmake}/bin/cmake -B dist -G "Unix Makefiles"
+              set -x
+              ${pkgs.cmake}/bin/cmake -B dist -G "Unix Makefiles"
             '')
             (writeShellScriptBin "clean" ''
-                set -x
-                rm -rf dist
+              set -x
+              rm -rf dist
             '')
           ];
           shellHook = ''
-              export RANLIB="${pkgs.gcc}/bin/ranlib"
-              export AR="${pkgs.gcc}/bin/ar"
-              ln -sf ${pkgs.cmake}/bin/cmake .idea/cmake-link
-              ln -sf ${pkgs.gcc}/bin/gcc .idea/cc-link
-              ln -sf ${pkgs.gcc}/bin/g++ .idea/cxx-link
+            export RANLIB="${pkgs.gcc}/bin/ranlib"
+            export AR="${pkgs.gcc}/bin/ar"
+            ln -sf ${pkgs.cmake}/bin/cmake .idea/cmake-link
+            ln -sf ${pkgs.gcc}/bin/gcc .idea/cc-link
+            ln -sf ${pkgs.gcc}/bin/g++ .idea/cxx-link
           '';
         };
       }
