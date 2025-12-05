@@ -10,7 +10,6 @@
 #include <fmt/core.h>
 #include <optional>
 #include <string>
-#include <vector>
 
 namespace aoc {
 
@@ -86,10 +85,6 @@ namespace aoc {
 			fmt::print("Part 2: Error: {}\n", e.what());
 		}
 		fmt::println("Ran year {}, day {}", year(), day());
-	}
-
-	std::vector<std::string> Base::readLines(const std::filesystem::path& path) {
-		return util::string::split(read(path), util::fs::eol());
 	}
 
 	std::string Base::read(const std::filesystem::path& path) {

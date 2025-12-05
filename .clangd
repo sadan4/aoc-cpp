@@ -1,8 +1,11 @@
 Diagnostics:
   UnusedIncludes: Strict
   MissingIncludes: Strict
+  ClangTidy:
+    FastCheckFilter: None
 CompileFlags:
   CompilationDatabase: ./dist
+  Remove: [-fvar-tracking, -fno-merge-debug-strings]
 Index:
   StandardLibrary: true
 Style:

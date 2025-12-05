@@ -34,9 +34,11 @@
             ninja
             bear
             fmt
+            fmt.dev
+            catch2_3
             (writeShellScriptBin "build" ''
               set -x
-              ${pkgs.bear}/bin/bear -- ${pkgs.gnumake}/bin/make -j -C dist
+              ${pkgs.gnumake}/bin/make -j -C dist "$@"
             '')
             (writeShellScriptBin "configure" ''
               set -x

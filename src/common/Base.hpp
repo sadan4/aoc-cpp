@@ -1,9 +1,9 @@
 #pragma once
-#include <filesystem>
-#include <string>
-#include <vector>
-#include <optional>
 #include "util/types.hpp"
+
+#include <filesystem>
+#include <optional>
+#include <string>
 
 namespace aoc {
 	class Base {
@@ -21,13 +21,14 @@ namespace aoc {
 		[[nodiscard]] virtual std::optional<i64> part2Expected() const;
 		[[nodiscard]] virtual std::filesystem::path part1FileName() const;
 		[[nodiscard]] virtual std::filesystem::path part2FileName() const;
-		// TODO: add parseInput function with CRTP that will provide the input type
-		// be ware of const/mutable inputs with that tho
+		// TODO: add parseInput function with CRTP that will provide the input
+		// type be ware of const/mutable inputs with that tho
 		[[nodiscard]] virtual i64 solvePart1(const std::string&) const = 0;
 		[[nodiscard]] virtual i64 solvePart2(const std::string&) const = 0;
 		void run() const;
+
 	  private:
-		[[nodiscard]] static std::vector<std::string> readLines(const std::filesystem::path& path);
-		[[nodiscard]] static std::string read(const std::filesystem::path& path);
+		[[nodiscard]] static std::string
+		read(const std::filesystem::path& path);
 	};
 } // namespace aoc

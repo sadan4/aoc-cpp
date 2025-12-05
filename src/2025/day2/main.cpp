@@ -14,9 +14,8 @@ namespace v = std::ranges::views;
 
 class Day2: public Base {
 	[[nodiscard]] static auto parseInput(const std::string& input) {
-		std::println("input=`{}`", input);
 		return util::string::split(input, ',')
-			   | v::transform([](std::string& rangeStr) {
+			   | v::transform([](std::string rangeStr) {
 					 util::string::trim(rangeStr);
 					 const auto split = util::string::split(rangeStr, '-');
 					 try {

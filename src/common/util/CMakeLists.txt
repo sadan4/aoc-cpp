@@ -1,0 +1,19 @@
+add_subdirectory(iter)
+target_sources(
+    common
+    PUBLIC
+    fs.cpp
+    fs.hpp
+    math.cpp
+    math.hpp
+    string.cpp
+    string.hpp
+    time.cpp
+    time.hpp
+    types.hpp
+)
+
+target_sources(test
+    PUBLIC
+    string.test.cpp
+)

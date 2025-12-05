@@ -10,54 +10,8 @@ namespace aoc::util::string {
 		constexpr auto npos = std::string::npos;
 	} // namespace
 
-	std::vector<std::string> split(const std::string& str, char delimiter,
-								   const SplitOptions& opts) noexcept {
-		return split(str, std::string {delimiter}, opts);
-	}
-
 	[[nodiscard]] std::vector<std::string>
-	split(const std::string& str, const std::string& delimiter,
-		  const SplitOptions& opts) noexcept {
-		if (!opts.limit) {
-			return {};
-		}
-		if (delimiter.size() > str.size()) {
-			return {str};
-		}
-		if (str.empty()) {
-			return {str};
-		}
-		std::vector<std::string> res;
-		int curCount = 0;
-		if (delimiter.empty()) {
-			for (const auto& curChar : str) {
-				if (curCount++ == opts.limit) {
-					break;
-				}
-				res.emplace_back(1, curChar);
-			}
-			return res;
-		}
-		auto lastPos = 0UZ;
-		auto nextPos = str.find(delimiter, lastPos);
-		while (curCount++ != opts.limit) {
-			if (nextPos == std::string::npos) {
-				nextPos = str.size();
-				res.emplace_back(str.begin() + lastPos, str.begin() + nextPos);
-				break;
-			}
-			res.emplace_back(str.begin() + lastPos, str.begin() + nextPos);
-			lastPos = nextPos + delimiter.size();
-			nextPos = str.find(delimiter, lastPos);
-			if (nextPos == str.size() - delimiter.size()) {
-				res.emplace_back();
-			}
-		}
-		return res;
-	}
-
-	[[nodiscard]] std::vector<std::string>
-	split(const std::string& str, const std::basic_regex<char>& delimiter,
+	split(const std::string& str, const std::regex& delimiter,
 		  const SplitOptions& opts) {
 		if (!opts.limit) {
 			return {};

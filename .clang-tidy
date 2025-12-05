@@ -21,6 +21,7 @@ cppcoreguidelines-*,
 -cppcoreguidelines-avoid-non-const-global-variables,
 misc-*,
 -misc-non-private-member-variables-in-classes,
+-misc-use-anonymous-namespace,
 modernize-*,
 -modernize-use-trailing-return-type,
 -modernize-avoid-c-arrays,
@@ -33,9 +34,11 @@ readability-*,
 -readability-qualified-auto'
 CheckOptions:
   bugprone-lambda-function-name.IgnoreMacros: true
+  cppcoreguidelines-avoid-do-while.IgnoreMacros: true
+  readability-function-cognitive-complexity.IgnoreMacros: true
+  readability-simplify-boolean-expr.IgnoreMacros: true
   cppcoreguidelines-avoid-non-const-global-variables.AllowInternalLinkage: true
   readability-identifier-length.IgnoredVariableNames: "^_.*$"
   readability-identifier-length.IgnoredParameterNames: "^_.*$"
   readability-identifier-length.IgnoredExceptionVariableNames: "^_.*|e$"
-  readability-simplify-boolean-expr.IgnoreMacros: true
   bugprone-unused-return-value.AllowCastToVoid: true
