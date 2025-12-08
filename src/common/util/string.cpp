@@ -10,46 +10,6 @@ namespace aoc::util::string {
 		constexpr auto npos = std::string::npos;
 	} // namespace
 
-	[[nodiscard]] std::vector<std::string>
-	split(const std::string& str, const std::regex& delimiter,
-		  const SplitOptions& opts) {
-		if (!opts.limit) {
-			return {};
-		}
-		if (str.empty()) {
-			return {str};
-		}
-
-		std::vector<std::string> res;
-
-		std::smatch match;
-
-		auto lastPos = str.begin();
-		const auto doSearch = [&] {
-			std::regex_search(lastPos, str.end(), match, delimiter, opts.flags);
-		};
-		doSearch();
-
-		int curCount = 0;
-		if (match.position() == 0) {
-			lastPos = str.begin() + match.length();
-			doSearch();
-		} else if (match.empty()) {
-			return {str};
-		}
-		while (curCount++ != opts.limit) {
-			doSearch();
-			res.emplace_back(
-				lastPos,
-				(match.empty() ? str.end() : lastPos + match.position()));
-			lastPos += match.position() + match.length();
-			if (lastPos > str.end()) {
-				break;
-			}
-		}
-		return res;
-	};
-
 	void trimr(std::string& str) noexcept {
 		if (str.empty()) {
 			return;

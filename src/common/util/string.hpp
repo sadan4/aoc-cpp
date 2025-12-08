@@ -1,10 +1,12 @@
 #pragma once
 #include "common/deps/ctre-unicode.hpp"
 
+#include <algorithm>
 #include <concepts>
 #include <cstddef>
 #include <ranges>
 #include <regex>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -19,44 +21,8 @@ namespace aoc::util::string {
 	namespace detail {
 		template<typename R>
 		[[nodiscard]] constexpr std::vector<R>
-		// NOLINTNEXTLINE bugprone-easily-swappable-parameters
-		splitImpl(const R& str, std::string_view delimiter,
-				  const SplitOptions& opts = {}) noexcept {
-			auto limit = opts.limit;
-			if (!limit) {
-				return {};
-			}
-			if (str.empty()) {
-				return {str};
-			}
-			std::vector<R> ret;
-			const auto end = str.end();
-			if (delimiter.empty()) {
-				auto cur = str.begin();
-				for (; cur != end - 1 && limit; limit--) {
-					ret.emplace_back(cur, cur++);
-				}
-				ret.emplace_back(cur, end);
-				return ret;
-			}
-			auto pos = 0UZ;
-			const auto len = str.length();
-			for (; pos != len && limit; limit--, pos++) {
-				const size_t found = str.find(delimiter, pos);
-				if (found == std::string_view::npos) {
-					break;
-				}
-				ret.emplace_back(str.begin() + pos, str.begin() + pos + found);
-			}
-			ret.emplace_back(str.begin() + pos, end);
-
-			return ret;
-		}
-
-		template <typename R>
-		[[nodiscard]] constexpr std::vector<R>
 		splitImpl(const R& str, char delimiter,
-			  const SplitOptions& opts = {}) noexcept {
+				  const SplitOptions& opts) noexcept {
 			auto limit = opts.limit;
 			if (!limit) {
 				return {};
@@ -81,6 +47,75 @@ namespace aoc::util::string {
 
 			res.emplace_back(nextMatchStart, end);
 
+			return res;
+		}
+
+		template<typename R>
+		[[nodiscard]] constexpr std::vector<R>
+		// NOLINTNEXTLINE bugprone-easily-swappable-parameters
+		splitImpl(const R& str, std::string_view delimiter,
+				  const SplitOptions& opts) noexcept {
+			if (delimiter.size() == 1) {
+				return splitImpl(str, delimiter[0], opts);
+			}
+			auto limit = opts.limit;
+			if (!limit) {
+				return {};
+			}
+			if (str.empty()) {
+				return {str};
+			}
+			std::vector<R> ret;
+			const auto end = str.end();
+			if (delimiter.empty()) {
+				auto cur = str.begin();
+				for (; cur != end - 1 && limit; limit--, cur++) {
+					ret.emplace_back(cur, cur + 1);
+				}
+				ret.emplace_back(cur, end);
+				return ret;
+			}
+			auto pos = 0UZ;
+			const auto len = str.length();
+			for (; pos != len && limit; limit--) {
+				const size_t found = str.find(delimiter, pos);
+				if (found == std::string_view::npos) {
+					break;
+				}
+				ret.emplace_back(str.begin() + pos, str.begin() + found);
+				pos = found + delimiter.size();
+			}
+			ret.emplace_back(str.begin() + pos, end);
+
+			return ret;
+		}
+
+		template<typename R>
+		[[nodiscard]] constexpr std::vector<R>
+		splitImpl(const R& str, const std::regex& delimiter,
+				  const SplitOptions& opts) {
+			auto limit = opts.limit;
+			if (!limit) {
+				return {};
+			}
+			if (str.empty()) {
+				return {""};
+			}
+
+			std::vector<std::string> res;
+			auto pos = str.begin();
+			const auto end = str.end();
+			std::smatch match;
+			for (; pos != end && limit; limit--) {
+				if (!std::regex_search(
+						pos, end, match, delimiter, opts.flags)) {
+					break;
+				}
+				const auto matchStart = pos + match.position();
+				res.emplace_back(pos, matchStart);
+				pos = matchStart + (match.length() ? match.length() : 1);
+			}
+			res.emplace_back(pos, end);
 			return res;
 		}
 	} // namespace detail
@@ -126,7 +161,7 @@ namespace aoc::util::string {
 
 	[[nodiscard]] constexpr std::vector<std::string_view>
 	splitView(std::string_view str, char delimiter,
-		  const SplitOptions& opts = {}) noexcept {
+			  const SplitOptions& opts = {}) noexcept {
 		return detail::splitImpl<std::string_view>(str, delimiter, opts);
 	}
 
@@ -138,13 +173,15 @@ namespace aoc::util::string {
 
 	[[nodiscard]] constexpr std::vector<std::string_view>
 	splitView(std::string_view str, std::string_view delimiter,
-		  const SplitOptions& opts = {}) noexcept {
+			  const SplitOptions& opts = {}) noexcept {
 		return detail::splitImpl<std::string_view>(str, delimiter, opts);
 	}
 
-	[[nodiscard]] std::vector<std::string>
-	split(const std::string& str, const std::basic_regex<char>& delimiter,
-		  const SplitOptions& opts = {});
+	[[nodiscard]] constexpr std::vector<std::string>
+	split(const std::string& str, const std::regex& delimiter,
+		  const SplitOptions& opts = {}) {
+		return detail::splitImpl<std::string>(str, delimiter, opts);
+	}
 
 	template<CTRERegex T>
 	[[nodiscard]] constexpr std::vector<std::string_view>
