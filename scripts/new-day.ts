@@ -202,7 +202,7 @@ int main() {
   main.cpp
 )
 
-target_link_libraries(day${dayStr} PRIVATE common fmt::fmt)
+target_link_libraries(day${dayStr} PRIVATE common)
 
 set_target_properties(day${dayStr} PROPERTIES
   INTERPROCEDURAL_OPTIMIZATION TRUE

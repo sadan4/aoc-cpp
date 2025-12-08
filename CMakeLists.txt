@@ -13,13 +13,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Include FetchContent module
 include(FetchContent)
 
-# Declare fmtlib dependency
-FetchContent_Declare(
-        fmt
-        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-        GIT_TAG 10.2.1
-)
-FetchContent_MakeAvailable(fmt)
+# # Declare fmtlib dependency
+# FetchContent_Declare(
+#         fmt
+#         GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+#         GIT_TAG 10.2.1
+# )
+# FetchContent_MakeAvailable(fmt)
 
 FetchContent_Declare(
   Catch2

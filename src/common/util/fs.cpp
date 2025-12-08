@@ -1,7 +1,7 @@
 #include "fs.hpp"
 
 #include <filesystem>
-#include <fmt/core.h>
+#include <format>
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
@@ -25,7 +25,7 @@ namespace aoc::util::fs {
 			if (path.has_parent_path() && !isRootPath(path.parent_path())) {
 				path = path.parent_path();
 			} else {
-				throw std::runtime_error(fmt::format(
+				throw std::runtime_error(std::format(
 					"failed to find the project root. started at {}",
 					std::filesystem::current_path().string()));
 			}
@@ -37,13 +37,13 @@ namespace aoc::util::fs {
 		const bool exists = std::filesystem::exists(path);
 		if (!exists) {
 			throw std::runtime_error(
-				fmt::format("File `{}` does not exist.", path.string()));
+				std::format("File `{}` does not exist.", path.string()));
 		}
 		std::ostringstream out;
 		const std::ifstream inputStream {path};
 		if (!inputStream) {
 			throw std::runtime_error(
-				fmt::format("failed to open file `{}`", path.string()));
+				std::format("failed to open file `{}`", path.string()));
 		}
 		out << inputStream.rdbuf();
 		const auto ret = out.str();

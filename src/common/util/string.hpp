@@ -118,12 +118,6 @@ namespace aoc::util::string {
 		return join(iter, "");
 	}
 
-	[[nodiscard]] constexpr std::vector<std::string_view>
-	split(std::string_view str, char delimiter,
-		  const SplitOptions& opts = {}) noexcept {
-		return detail::splitImpl<std::string_view>(str, delimiter, opts);
-	}
-
 	[[nodiscard]] constexpr std::vector<std::string>
 	split(const std::string& str, char delimiter,
 		  const SplitOptions& opts = {}) noexcept {
@@ -131,7 +125,7 @@ namespace aoc::util::string {
 	}
 
 	[[nodiscard]] constexpr std::vector<std::string_view>
-	split(std::string_view str, std::string_view delimiter,
+	splitView(std::string_view str, char delimiter,
 		  const SplitOptions& opts = {}) noexcept {
 		return detail::splitImpl<std::string_view>(str, delimiter, opts);
 	}
@@ -140,6 +134,12 @@ namespace aoc::util::string {
 	split(const std::string& str, std::string_view delimiter,
 		  const SplitOptions& opts = {}) noexcept {
 		return detail::splitImpl<std::string>(str, delimiter, opts);
+	}
+
+	[[nodiscard]] constexpr std::vector<std::string_view>
+	splitView(std::string_view str, std::string_view delimiter,
+		  const SplitOptions& opts = {}) noexcept {
+		return detail::splitImpl<std::string_view>(str, delimiter, opts);
 	}
 
 	[[nodiscard]] std::vector<std::string>
