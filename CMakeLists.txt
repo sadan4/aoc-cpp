@@ -60,9 +60,13 @@ else()
     message(WARNING "Compiler does not support -fsanitize=undefined, undefined behavior sanitizer disabled")
 endif()
 
-# has asan test is buggy
-target_compile_options(test PRIVATE -fsanitize=address)
-target_link_options(test PRIVATE -fsanitize=address)
+check_cxx_compiler_flag(-fsanitize=address HAS_ASAN)
+if (HAS_ASAN)
+    target_compile_options(test PRIVATE -fsanitize=address)
+    target_link_options(test PRIVATE -fsanitize=address)
+else()
+    message(WARNING "Compiler does not support -fsanitize=address, address sanitizer disabled")
+endif()
 
 if (WIN32)
     target_compile_options(test PRIVATE -g)

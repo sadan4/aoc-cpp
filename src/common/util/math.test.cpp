@@ -1,8 +1,10 @@
 #include "math.hpp"
+#include "types.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 
 #include <limits>
+#include <stdexcept>
 
 using namespace aoc::util::math;
 

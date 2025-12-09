@@ -8,6 +8,7 @@ google-*,
 -google-readability-todo,
 -google-build-namespaces,
 bugprone-*,
+-bugprone-inc-dec-in-conditions,
 -bugprone-narrowing-conversions,
 clang-analyzer-*,
 concurrency-*,
@@ -35,6 +36,7 @@ readability-*,
 CheckOptions:
   bugprone-lambda-function-name.IgnoreMacros: true
   cppcoreguidelines-avoid-do-while.IgnoreMacros: true
+  cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor: true
   readability-function-cognitive-complexity.IgnoreMacros: true
   readability-simplify-boolean-expr.IgnoreMacros: true
   cppcoreguidelines-avoid-non-const-global-variables.AllowInternalLinkage: true

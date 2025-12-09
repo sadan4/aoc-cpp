@@ -1,19 +1,169 @@
-#include "common/util/types.hpp"
+#pragma once
 
+#include <cassert>
+#include <concepts>
 #include <cstddef>
 #include <iterator>
+#include <optional>
 #include <ranges>
 #include <string_view>
 
 namespace aoc::util::iter {
 	namespace detail {
+		template<std::input_iterator T>
+		requires std::equality_comparable<T>
+		struct SplitResult {
+			/**
+			 * @brief the start of the matched portion
+			 * if begin == end, then a match of length 0 was found
+			 */
+			T begin;
+			T end;
+
+			[[nodiscard]] constexpr bool
+			operator==(const SplitResult<T>& other) const {
+				return begin == other.begin && end == other.end;
+			}
+		};
+
+		using StringSplitResult = SplitResult<std::string_view::const_iterator>;
+
+		class IStringSplitter {
+		  public:
+			virtual ~IStringSplitter() = default;
+			[[nodiscard]] virtual std::optional<StringSplitResult>
+			split(std::string_view str) const = 0;
+		};
+
+		template<typename T>
+		concept StringSplitter = std::derived_from<T, IStringSplitter>;
+
+		class StringCharSplitter final: public IStringSplitter {
+		  private:
+			char delimiter;
+
+		  public:
+			explicit StringCharSplitter(char delimiter):
+				delimiter(delimiter) {
+			}
+
+			[[nodiscard]] constexpr std::optional<StringSplitResult>
+			split(std::string_view str) const override {
+				auto it = str.cbegin();
+				const auto end = str.end();
+				while (it != end) {
+					if (*it == delimiter) {
+						return std::make_optional<StringSplitResult>(
+							{.begin = it, .end = it + 1});
+					}
+					++it;
+				}
+				return std::nullopt;
+			}
+		};
+
 		struct SplitViewSentinel { };
 
-		template<class I>
-		class SplitView: std::ranges::view_interface<SplitView<I>> {
+		template<StringSplitter S>
+		class SplitView: std::ranges::view_interface<SplitView<S>> {
+		  private:
+			class Iterator {
+			  private:
+				S splitter;
+				std::string_view str;
+				mutable std::optional<StringSplitResult> pos;
+				bool done {false};
+
+				constexpr void compute() const {
+					if (pos) {
+						return;
+					}
+					pos = std::move(splitter.split(str));
+				}
+
+				constexpr bool isZeroLengthMatch() {
+					assert(pos.has_value());
+					return pos->begin == pos->end;
+				}
+
+			  public:
+				using difference_type = std::ptrdiff_t;
+				using value_type = std::string_view;
+
+				constexpr Iterator(std::string_view str, S splitter):
+					splitter(std::move(splitter)),
+					str(str) {
+				}
+
+				[[nodiscard]] constexpr std::string_view operator*() const {
+					assert(!done);
+					compute();
+					if (!pos) {
+						return str;
+					}
+					return {str.begin(), pos->begin};
+				}
+
+				constexpr Iterator& operator++() {
+					assert(!done);
+					compute();
+					if (pos) {
+						auto nextStart = pos->end;
+						const auto end = str.end();
+						if (nextStart - 1 == end) {
+							done = true;
+						} else if (isZeroLengthMatch() && nextStart == end + 1) {
+							str = {};
+						} else {
+							str = {nextStart, end};
+							pos.reset();
+						}
+					} else {
+						done = true;
+					}
+					return *this;
+				}
+
+				[[nodiscard]] constexpr Iterator operator++(int) {
+					auto tmp = *this;
+					++*this;
+					return tmp;
+				}
+
+				[[nodiscard]] constexpr bool
+				operator==(const SplitViewSentinel& /*unused*/) const {
+					return done;
+				}
+
+				[[nodiscard]] constexpr bool
+				operator==(const Iterator& other) const {
+					if (done != other.done) {
+						return false;
+					}
+					if (str != other.str) {
+						return false;
+					}
+
+					if (pos.has_value() != other.pos.has_value()) {
+						compute();
+						other.compute();
+					}
+					return pos == other.pos;
+				}
+			};
+
+			static_assert(std::input_iterator<Iterator>,
+						  "not an input iterator");
+
+			static_assert(std::sentinel_for<SplitViewSentinel, Iterator>,
+						  "not a sentinel");
+
+			Iterator it;
+			SplitViewSentinel _end {};
+
 		  public:
-			explicit SplitView(I begin):
-				it(std::move(begin)) {
+			SplitView(std::string_view str, S splitter):
+				it(str, std::move(splitter)) {
 			}
 
 			auto begin() const {
@@ -23,143 +173,11 @@ namespace aoc::util::iter {
 			auto end() const {
 				return _end;
 			}
-
-		  private:
-			using Iterator = I;
-			I it;
-			SplitViewSentinel _end;
 		};
-
-		class SplitViewCharIterator {
-		  private:
-			enum Markers : i8 {
-				DEFAULT = -1,
-			};
-
-			std::string_view str;
-			std::string_view::const_iterator it;
-			char delimiter;
-			mutable i32 size {Markers::DEFAULT};
-
-			constexpr void compute() const {
-				if (size != Markers::DEFAULT) {
-					return;
-				}
-				if (str.empty()) {
-					size = 0;
-					return;
-				}
-				auto it = this->it;
-				const auto end = str.end();
-				while (it != end) {
-					if (*it == delimiter) {
-						break;
-					}
-					++it;
-				}
-				size = (it - this->it);
-			}
-
-		  public:
-			using difference_type = std::ptrdiff_t;
-			using value_type = std::string_view;
-			SplitViewCharIterator() = delete;
-
-			/*
-			 * Internal
-			 */
-			SplitViewCharIterator(std::string_view str, char delimiter):
-				str(str),
-				it(str.begin()),
-				delimiter(delimiter) {
-			}
-
-			SplitViewCharIterator(const SplitViewCharIterator& other) = default;
-
-			SplitViewCharIterator&
-			operator=(const SplitViewCharIterator& other) = default;
-
-			SplitViewCharIterator(SplitViewCharIterator&& other) noexcept =
-				default;
-
-			SplitViewCharIterator&
-			operator=(SplitViewCharIterator&& other) noexcept = default;
-
-			~SplitViewCharIterator() noexcept = default;
-
-			[[nodiscard]] constexpr std::string_view operator*() const {
-				compute();
-				return {it, static_cast<std::size_t>(size)};
-			}
-
-			[[nodiscard]] constexpr bool
-			operator==(const SplitViewCharIterator& other) const {
-				return it == other.it && delimiter == other.delimiter
-					   && str == other.str;
-			}
-
-			[[nodiscard]] constexpr bool
-			operator==(const SplitViewSentinel& /*unused*/) const {
-				return it == str.end() + 1;
-			}
-
-			constexpr SplitViewCharIterator& operator++() {
-				compute();
-				it += size + 1;
-				size = Markers::DEFAULT;
-				return *this;
-			}
-
-			constexpr SplitViewCharIterator operator++(int) {
-				auto tmp = *this;
-				++*this;
-				return tmp;
-			}
-		};
-
-		static_assert(std::input_iterator<SplitViewCharIterator>,
-					  "not an input iterator");
-
-		static_assert(
-			std::sentinel_for<SplitViewSentinel, SplitViewCharIterator>,
-			"not a sentinel");
 	} // namespace detail
 
 	[[nodiscard]] constexpr auto split(std::string_view str,
 									   char delimiter) noexcept {
-		return detail::SplitView<detail::SplitViewCharIterator> {
-			{str, delimiter}};
+		return detail::SplitView {str, detail::StringCharSplitter {delimiter}};
 	}
 } // namespace aoc::util::iter
-
-// SECTION("splitView", "[splitView]") {
-// 	SECTION("it handles single characters") {
-
-// 		using vec = std::vector<std::string_view>;
-
-// 		REQUIRE(splitView("abc", 'b') == vec {"a", "c"});
-// 		REQUIRE(splitView("a--b--c--d", '-')
-// 				== vec {"a", "", "b", "", "c", "", "d"});
-// 		REQUIRE(splitView("abc", '\0') == vec {"abc"});
-// 		REQUIRE(splitView("", char {}) == vec {""});
-// 		REQUIRE(splitView("a", 'a') == vec {"", ""});
-// 		REQUIRE(splitView("a-b-c", '-') == vec {"a", "b", "c"});
-// 		REQUIRE(splitView("-a-b-c-", '-') == vec {"", "a", "b", "c", ""});
-// 		REQUIRE(splitView("a-b-c-", '-') == vec {"a", "b", "c", ""});
-// 		REQUIRE(splitView("-a-b-c", '-') == vec {"", "a", "b", "c"});
-// 		REQUIRE(splitView("--a--b--c--", '-')
-// 				== vec {"", "", "a", "", "b", "", "c", "", ""});
-// 		REQUIRE(splitView("a--b--c--", '-')
-// 				== vec {"a", "", "b", "", "c", "", ""});
-// 		REQUIRE(splitView("--a--b--c", '-')
-// 				== vec {
-// 					"",
-// 					"",
-// 					"a",
-// 					"",
-// 					"b",
-// 					"",
-// 					"c",
-// 				});
-// 	}
-// }
