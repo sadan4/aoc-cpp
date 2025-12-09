@@ -6,4 +6,5 @@ target_sources(common
 target_sources(test
     PUBLIC
     split.test.cpp
+    trim.test.cpp
 )

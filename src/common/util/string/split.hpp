@@ -2,6 +2,7 @@
 #include "common/deps/ctre-unicode.hpp"
 
 #include <cstddef>
+#include <ranges>
 #include <regex>
 #include <string>
 #include <string_view>
@@ -121,7 +122,7 @@ namespace aoc::util::string {
 				res.emplace_back(pos, matchStart);
 				// https://github.com/llvm/llvm-project/issues/171193
 				// NOLINTNEXTLINE(readability-container-size-empty)
-				pos = matchStart + (match.length() ?: 1);
+				pos = matchStart + (match.length() ? match.length() : 1);
 			}
 			res.emplace_back(pos, end);
 			return res;
@@ -150,7 +151,7 @@ namespace aoc::util::string {
 				}
 				const auto matchStart = match.begin();
 				res.emplace_back(pos, matchStart);
-				pos = matchStart + (match.size() ?: 1);
+				pos = matchStart + (match.size() ? match.size() : 1);
 			}
 			res.emplace_back(pos, end);
 			return res;

@@ -1,6 +1,10 @@
 #pragma once
 #include "types.hpp"
+
+#include <format>
 #include <limits>
+#include <stdexcept>
+#include <string_view>
 
 namespace aoc::util::math {
 	constexpr i8 sign(i8 val) {
@@ -140,4 +144,21 @@ namespace aoc::util::math {
 		return result;
 	}
 
+	[[nodiscard]] constexpr u64 base10ToU64(std::string_view str) {
+		u64 result = 0;
+		u64 mask = 1;
+
+		const auto begin = str.rbegin();
+		const auto end = str.rend();
+		for (auto it = begin; it != end; ++it) {
+			const char c = *it;
+			if (c < '0' || c > '9') {
+				throw std::invalid_argument(std::format(
+					"Invalid character in base 10 string: `{}`", c));
+			}
+			result += (c - '0') * mask;
+			mask *= 10;
+		}
+		return result;
+	}
 } // namespace aoc::util::math

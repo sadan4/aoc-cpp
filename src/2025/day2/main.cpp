@@ -9,19 +9,20 @@
 #include <print>
 #include <ranges>
 #include <string>
+#include <string_view>
 
 using namespace aoc;
 namespace v = std::ranges::views;
 
 class Day2: public Base {
 	[[nodiscard]] static auto parseInput(const std::string& input) {
-		return util::string::split(input, ',')
-			   | v::transform([](std::string rangeStr) {
+		return util::string::splitView(input, ',')
+			   | v::transform([](std::string_view rangeStr) {
 					 util::string::trim(rangeStr);
-					 const auto split = util::string::split(rangeStr, '-');
+					 const auto split = util::string::splitView(rangeStr, '-');
 					 try {
-						 const u64 start = std::stoull(split.at(0));
-						 const u64 end = std::stoull(split.at(1));
+						 const u64 start = util::math::base10ToU64(split.at(0));
+						 const u64 end = util::math::base10ToU64(split.at(1));
 						 return v::iota(start, end + 1);
 					 } catch (...) {
 						 std::println("rangeStr=`{}`", rangeStr);

@@ -2,6 +2,7 @@
 #include "common/util/fs.hpp"
 #include "common/util/math.hpp"
 #include "common/util/string.hpp"
+#include "common/util/string/split.hpp"
 #include "common/util/types.hpp"
 
 #include <cstdlib>

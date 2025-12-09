@@ -12,3 +12,7 @@ target_sources(
     time.hpp
     types.hpp
 )
+target_sources(test
+    PUBLIC
+    math.test.cpp
+)
