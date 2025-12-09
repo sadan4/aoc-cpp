@@ -145,7 +145,7 @@ namespace aoc::util::iter {
 						auto nextStart = pos->end;
 						const auto end = str.end();
 						if (nextStart - 1 == end
-							|| isZeroLengthMatch() && nextStart == end) {
+							|| (isZeroLengthMatch() && nextStart == end)) {
 							done = true;
 						} else {
 							str = {nextStart, end};
