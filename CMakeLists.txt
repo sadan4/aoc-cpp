@@ -52,6 +52,18 @@ if (HAS_NO_MERGE_DEBUG_STRINGS)
     target_compile_options(test PRIVATE -fno-merge-debug-strings)
 endif()
 
+check_cxx_compiler_flag(-fsanitize=undefined HAS_UBSAN)
+if (HAS_UBSAN)
+    target_compile_options(test PRIVATE -fsanitize=undefined)
+    target_link_options(test PRIVATE -fsanitize=undefined)
+else()
+    message(WARNING "Compiler does not support -fsanitize=undefined, undefined behavior sanitizer disabled")
+endif()
+
+# has asan test is buggy
+target_compile_options(test PRIVATE -fsanitize=address)
+target_link_options(test PRIVATE -fsanitize=address)
+
 if (WIN32)
     target_compile_options(test PRIVATE -g)
 else()

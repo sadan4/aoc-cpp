@@ -13,6 +13,7 @@ TEST_CASE("util::string", "[util][string]") {
 	SECTION("split", "[split]") {
 		SECTION("it handles single characters") {
 			using vec = std::vector<std::string>;
+
 			REQUIRE(split("abc", 'b') == vec {"a", "c"});
 			REQUIRE(split("a--b--c--d", '-')
 					== vec {"a", "", "b", "", "c", "", "d"});

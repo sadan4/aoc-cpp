@@ -1,10 +1,7 @@
 #pragma once
 #include "common/deps/ctre-unicode.hpp"
-#include "common/util/types.hpp"
 
 #include <cstddef>
-#include <optional>
-#include <ranges>
 #include <regex>
 #include <string>
 #include <string_view>
@@ -25,115 +22,11 @@ namespace aoc::util::string {
 	};
 
 	namespace detail {
-		struct SplitViewSentinel { };
-
-		template<class I>
-		class SplitView: std::ranges::view_interface<SplitView<I>> {
-			explicit SplitView(I begin):
-				it(std::move(begin)) {
-			}
-
-			auto begin() const {
-				return it;
-			}
-
-			auto end() const {
-				return _end;
-			}
-
-		  private:
-			using Iterator = I;
-			I it;
-			SplitViewSentinel _end;
-			friend class SplitViewCharIterator;
-		};
-
-		class SplitViewCharIterator {
-			enum Markers : i8 {
-				DEFAULT = -1,
-			};
-
-			std::string_view str;
-			std::string_view::const_iterator it;
-			char delimiter;
-			mutable i32 size {Markers::DEFAULT};
-
-			constexpr SplitViewCharIterator(std::string_view str,
-											char delimiter):
-				str(str),
-				it(str.begin()),
-				delimiter(delimiter) {
-			}
-
-			constexpr SplitViewCharIterator(
-				const SplitViewCharIterator& other) = default;
-
-			constexpr SplitViewCharIterator&
-			operator=(const SplitViewCharIterator& other) = default;
-
-			constexpr SplitViewCharIterator(
-				SplitViewCharIterator&& other) noexcept = default;
-
-			constexpr SplitViewCharIterator&
-			operator=(SplitViewCharIterator&& other) noexcept = default;
-
-			constexpr ~SplitViewCharIterator() = default;
-
-			constexpr void compute() const {
-				if (size != Markers::DEFAULT) {
-					return;
-				}
-				if (str.empty()) {
-					size = 0;
-					return;
-				}
-				auto it = this->it;
-				const auto end = str.end();
-				while (it != end) {
-					if (*it == delimiter) {
-						break;
-					}
-					++it;
-				}
-				size = (it - this->it);
-			}
-
-		  public:
-			[[nodiscard]] constexpr std::string_view operator*() const {
-				compute();
-				return {it, static_cast<std::size_t>(size)};
-			}
-
-			[[nodiscard]] constexpr bool
-			operator==(const SplitViewCharIterator& other) const {
-				return it == other.it && delimiter == other.delimiter
-					   && str == other.str;
-			}
-
-			[[nodiscard]] constexpr bool
-			operator==(const SplitViewSentinel& /*unused*/) const {
-				return it == str.end();
-			}
-
-			constexpr SplitViewCharIterator& operator++() {
-				compute();
-				it += size + 1;
-				size = Markers::DEFAULT;
-				return *this;
-			}
-
-			constexpr SplitViewCharIterator operator++(int) {
-				auto tmp = *this;
-				++*this;
-				return tmp;
-			}
-		};
 
 		template<typename R>
 		[[nodiscard]] constexpr std::vector<R>
 		splitImpl(const R& str, char delimiter,
 				  const SplitOptions& opts) noexcept {
-
 			auto limit = opts.limit;
 			if (!limit) {
 				return {};

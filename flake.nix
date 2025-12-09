@@ -42,7 +42,7 @@
             '')
             (writeShellScriptBin "configure" ''
               set -x
-              ${pkgs.cmake}/bin/cmake -B dist -G "Unix Makefiles"
+              ${pkgs.cmake}/bin/cmake -B dist -G "Unix Makefiles" "$@"
             '')
             (writeShellScriptBin "clean" ''
               set -x
