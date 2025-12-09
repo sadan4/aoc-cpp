@@ -62,10 +62,44 @@ namespace aoc::util::iter {
 			}
 		};
 
+		class StringStringSplitter final: public IStringSplitter {
+			std::string_view delimiter;
+
+		  public:
+			explicit StringStringSplitter(std::string_view delimiter):
+				delimiter(delimiter) {
+			}
+
+			[[nodiscard]] constexpr std::optional<StringSplitResult>
+			split(std::string_view str) const override {
+				const auto delimSize = delimiter.size();
+				const auto strSize = str.size();
+				if (delimSize > strSize || !strSize) {
+					return std::nullopt;
+				}
+				if (!delimSize) {
+					const auto b = str.begin() + 1;
+					return std::make_optional<StringSplitResult>({
+						.begin = b,
+						.end = b,
+					});
+				}
+				if (const auto pos = str.find(delimiter);
+					pos != std::string_view::npos) {
+					const auto begin = str.begin() + pos;
+					return std::make_optional<StringSplitResult>(
+						{.begin = begin, .end = begin + delimSize});
+				}
+				return std::nullopt;
+			}
+		};
+
 		struct SplitViewSentinel { };
 
 		template<StringSplitter S>
 		class SplitView: std::ranges::view_interface<SplitView<S>> {
+			static_assert(std::is_final_v<S>, "Splitter must be final");
+
 		  private:
 			class Iterator {
 			  private:
@@ -110,10 +144,9 @@ namespace aoc::util::iter {
 					if (pos) {
 						auto nextStart = pos->end;
 						const auto end = str.end();
-						if (nextStart - 1 == end) {
+						if (nextStart - 1 == end
+							|| isZeroLengthMatch() && nextStart == end) {
 							done = true;
-						} else if (isZeroLengthMatch() && nextStart == end + 1) {
-							str = {};
 						} else {
 							str = {nextStart, end};
 							pos.reset();
@@ -179,5 +212,11 @@ namespace aoc::util::iter {
 	[[nodiscard]] constexpr auto split(std::string_view str,
 									   char delimiter) noexcept {
 		return detail::SplitView {str, detail::StringCharSplitter {delimiter}};
+	}
+
+	[[nodiscard]] constexpr auto split(std::string_view str,
+									   std::string_view delimiter) noexcept {
+		return detail::SplitView {str,
+								  detail::StringStringSplitter {delimiter}};
 	}
 } // namespace aoc::util::iter
