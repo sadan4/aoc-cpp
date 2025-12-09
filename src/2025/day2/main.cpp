@@ -1,4 +1,8 @@
 #include "common/Base.hpp"
+#include "common/util/iter/filter.hpp"
+#include "common/util/iter/flatMap.hpp"
+#include "common/util/iter/iota.hpp"
+#include "common/util/iter/split.hpp"
 #include "common/util/iter/sum.hpp"
 #include "common/util/math.hpp"
 #include "common/util/string/split.hpp"
@@ -11,25 +15,24 @@
 #include <string>
 #include <string_view>
 
+
 using namespace aoc;
-namespace v = std::ranges::views;
 
 class Day2: public Base {
 	[[nodiscard]] static auto parseInput(const std::string& input) {
-		return util::string::splitView(input, ',')
-			   | v::transform([](std::string_view rangeStr) {
+		return util::iter::split(input, ',')
+			   | util::iter::flatMap([](std::string_view rangeStr) {
 					 util::string::trim(rangeStr);
 					 const auto split = util::string::splitView(rangeStr, '-');
 					 try {
 						 const u64 start = util::math::base10ToU64(split.at(0));
 						 const u64 end = util::math::base10ToU64(split.at(1));
-						 return v::iota(start, end + 1);
+						 return util::iter::iota(start, end + 1);
 					 } catch (...) {
 						 std::println("rangeStr=`{}`", rangeStr);
 						 throw;
 					 }
-				 })
-			   | v::join;
+				 });
 	}
 
   public:
@@ -63,7 +66,7 @@ class Day2: public Base {
 			return topDigits != bottomDigits;
 		};
 		return parseInput(input)
-			   | v::filter([](const u64 id) { return !isValidId(id); })
+			   | util::iter::filterNot(isValidId)
 			   | util::iter::sum;
 	}
 
@@ -75,7 +78,7 @@ class Day2: public Base {
 };
 
 int main() {
-	Day2 solution;
+	const Day2 solution;
 
 	solution.run();
 

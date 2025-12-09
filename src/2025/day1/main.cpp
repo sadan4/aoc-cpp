@@ -1,16 +1,16 @@
 #include "common/Base.hpp"
 #include "common/util/fs.hpp"
+#include "common/util/iter/map.hpp"
 #include "common/util/math.hpp"
-#include "common/util/string.hpp"
 #include "common/util/string/split.hpp"
 #include "common/util/types.hpp"
 
 #include <cstdlib>
 #include <optional>
 #include <print>
-#include <ranges>
 #include <string>
 #include <vector>
+
 
 using namespace aoc;
 
@@ -74,13 +74,12 @@ class Day1: public Base {
   private:
 	[[nodiscard]] static std::vector<i32> parseInput(const std::string& input) {
 		std::println("input=`{}`", input);
-		const auto ret =
-			util::string::split(input, util::fs::eol())
-			| std::ranges::views::transform([](const std::string& line) {
-				  const i8 dir = line.at(0) == 'L' ? -1 : 1;
-				  const i32 num = std::stoi(line.substr(1));
-				  return dir * num;
-			  });
+		const auto ret = util::string::split(input, util::fs::eol())
+						 | util::iter::map([](const std::string& line) {
+							   const i8 dir = line.at(0) == 'L' ? -1 : 1;
+							   const i32 num = std::stoi(line.substr(1));
+							   return dir * num;
+						   });
 
 		return {ret.begin(), ret.end()};
 	}
