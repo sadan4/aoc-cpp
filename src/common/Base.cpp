@@ -1,8 +1,8 @@
 #include "Base.hpp"
 
 #include "util/fs.hpp"
-#include "util/string.hpp"
 #include "util/time.hpp"
+#include "util/string/trim.hpp"
 #include "util/types.hpp"
 
 #include <exception>

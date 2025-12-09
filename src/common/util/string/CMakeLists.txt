@@ -1,0 +1,9 @@
+target_sources(common
+    PUBLIC
+    split.hpp
+    trim.hpp
+)
+target_sources(test
+    PUBLIC
+    split.test.cpp
+)

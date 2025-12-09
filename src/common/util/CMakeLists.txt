@@ -1,4 +1,5 @@
 add_subdirectory(iter)
+add_subdirectory(string)
 target_sources(
     common
     PUBLIC
@@ -6,14 +7,8 @@ target_sources(
     fs.hpp
     math.cpp
     math.hpp
-    string.cpp
     string.hpp
     time.cpp
     time.hpp
     types.hpp
-)
-
-target_sources(test
-    PUBLIC
-    string.test.cpp
 )
