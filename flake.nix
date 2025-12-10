@@ -29,6 +29,7 @@
       {
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
+            lld
             gcc
             meson
             ninja
@@ -36,18 +37,25 @@
             fmt
             fmt.dev
             catch2_3
+            pkgconf
+            cmake
             (writeShellScriptBin "build" ''
               set -x
               ${pkgs.gnumake}/bin/make -j -C dist "$@"
             '')
             (writeShellScriptBin "configure" ''
               set -x
-              ${pkgs.cmake}/bin/cmake -B dist -G "Unix Makefiles" "$@"
+              ${pkgs.cmake}/bin/cmake -B dist -G "Unix Makefiles" -DHAS_ASAN=TRUE -DCMAKE_LINKER=ld.lld "$@"
             '')
             (writeShellScriptBin "clean" ''
               set -x
               rm -rf dist
             '')
+          ];
+          #conflicts with -O0, which is used in tests
+          hardeningDisable = [
+            "fortify"
+            "fortify3"
           ];
           shellHook = ''
             export RANLIB="${pkgs.gcc}/bin/ranlib"
@@ -55,6 +63,7 @@
             ln -sf ${pkgs.cmake}/bin/cmake .idea/cmake-link
             ln -sf ${pkgs.gcc}/bin/gcc .idea/cc-link
             ln -sf ${pkgs.gcc}/bin/g++ .idea/cxx-link
+            export detect_invalid_pointer_pairs=2
           '';
         };
       }

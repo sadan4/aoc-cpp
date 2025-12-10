@@ -16,13 +16,13 @@ set(IS_GCC ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
 include(FetchContent)
 include(CheckCXXCompilerFlag)
 
-# # Declare fmtlib dependency
-# FetchContent_Declare(
-#         fmt
-#         GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-#         GIT_TAG 10.2.1
-# )
-# FetchContent_MakeAvailable(fmt)
+# Declare fmtlib dependency
+FetchContent_Declare(
+        fmt
+        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+        GIT_TAG 10.2.1
+)
+FetchContent_MakeAvailable(fmt)
 
 FetchContent_Declare(
   Catch2
@@ -39,7 +39,7 @@ add_executable(test)
 target_link_libraries(test PRIVATE Catch2::Catch2WithMain common)
 
 check_cxx_compiler_flag(-fvar-tracking HAS_VAR_TRACKING)
-if (HAS_VAR_TRACKING) 
+if (HAS_VAR_TRACKING)
     target_compile_options(test PRIVATE -fvar-tracking)
 endif()
 
@@ -56,6 +56,9 @@ check_cxx_compiler_flag(-fsanitize=undefined HAS_UBSAN)
 if (HAS_UBSAN)
     target_compile_options(test PRIVATE -fsanitize=undefined)
     target_link_options(test PRIVATE -fsanitize=undefined)
+
+    target_compile_options(test PRIVATE -fsanitize=bounds-strict)
+    target_link_options(test PRIVATE -fsanitize=bounds-strict)
 else()
     message(WARNING "Compiler does not support -fsanitize=undefined, undefined behavior sanitizer disabled")
 endif()
@@ -64,6 +67,12 @@ check_cxx_compiler_flag(-fsanitize=address HAS_ASAN)
 if (HAS_ASAN)
     target_compile_options(test PRIVATE -fsanitize=address)
     target_link_options(test PRIVATE -fsanitize=address)
+
+    target_compile_options(test PRIVATE -fsanitize=pointer-compare)
+    target_link_options(test PRIVATE -fsanitize=pointer-compare)
+
+    target_compile_options(test PRIVATE -fsanitize=pointer-subtract)
+    target_link_options(test PRIVATE -fsanitize=pointer-subtract)
 else()
     message(WARNING "Compiler does not support -fsanitize=address, address sanitizer disabled")
 endif()
@@ -121,4 +130,3 @@ add_subdirectory(src)
 # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Og")
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Og")
 # add_compile_options(-fno-omit-frame-pointer -mno-omit-leaf-frame-pointer)
-

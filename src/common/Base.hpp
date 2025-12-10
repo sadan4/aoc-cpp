@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <optional>
 #include <string>
+#include <string_view>
 
 namespace aoc {
 	class Base {
@@ -27,8 +28,33 @@ namespace aoc {
 		[[nodiscard]] virtual i64 solvePart2(const std::string&) const = 0;
 		void run() const;
 
+		void parseCLI(int argc, char* argv[]) {
+			for (i32 i = 1; i != argc; ++i) {
+				const std::string_view arg = argv[i];
+				if (!perfCount && arg == "--perf") {
+					perfCount = true;
+					continue;
+				}
+				if (runPartOne && arg == "--skip-part-1") {
+					runPartOne = false;
+					continue;
+				}
+				if (runPartTwo && arg == "--skip-part-2") {
+					runPartTwo = false;
+					continue;
+				}
+			}
+		}
+
+	  protected:
+		bool perfCount = false;
+		bool runPartOne = true;
+		bool runPartTwo = true;
+
 	  private:
 		[[nodiscard]] static std::string
 		read(const std::filesystem::path& path);
+		void runPart1() const;
+		void runPart2() const;
 	};
 } // namespace aoc

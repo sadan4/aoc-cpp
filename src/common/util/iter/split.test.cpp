@@ -4,6 +4,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_templated.hpp>
+#include <regex>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -124,6 +125,42 @@ TEST_CASE("util::iter::split") {
 			REQUIRE_THAT(split("", ""), EqualsIterator(""));
 			REQUIRE_THAT(split("ab", "ab"), EqualsIterator("", ""));
 			REQUIRE_THAT(split("ab", "abab"), EqualsIterator("ab"));
+		}
+	}
+	SECTION("split(std::string_view, std::regex)") {
+		using r = std::regex;
+		const auto dashRegex = r {"-"};
+		REQUIRE_THAT(split("abc", r {"b"}), EqualsIterator("a", "c"));
+		REQUIRE_THAT(split("a--b--c--d", dashRegex),
+					 EqualsIterator("a", "", "b", "", "c", "", "d"));
+		REQUIRE_THAT(split("a", r {"a"}), EqualsIterator("", ""));
+		REQUIRE_THAT(split("a-b-c", dashRegex), EqualsIterator("a", "b", "c"));
+		REQUIRE_THAT(split("-a-b-c-", dashRegex),
+					 EqualsIterator("", "a", "b", "c", ""));
+		REQUIRE_THAT(split("a-b-c-", dashRegex),
+					 EqualsIterator("a", "b", "c", ""));
+		REQUIRE_THAT(split("-a-b-c", dashRegex),
+					 EqualsIterator("", "a", "b", "c"));
+		REQUIRE_THAT(split("--a--b--c--", dashRegex),
+					 EqualsIterator("", "", "a", "", "b", "", "c", "", ""));
+		REQUIRE_THAT(split("a--b--c--", dashRegex),
+					 EqualsIterator("a", "", "b", "", "c", "", ""));
+		REQUIRE_THAT(split("--a--b--c", dashRegex),
+					 EqualsIterator("", "", "a", "", "b", "", "c"));
+		SECTION("edge cases") {
+			const auto emptyRegex = r {};
+			const auto emptyStringRegex = r {""};
+			const auto defaultJsRegex = r {"(?:)"};
+			REQUIRE_THAT(split("", emptyRegex), EqualsIterator(""));
+			REQUIRE_THAT(split("abc", emptyRegex), EqualsIterator("abc"));
+			REQUIRE_THAT(split("", defaultJsRegex), EqualsIterator(""));
+			REQUIRE_THAT(split("abc", defaultJsRegex),
+						 EqualsIterator("", "", "", ""));
+			REQUIRE_THAT(split("", emptyStringRegex), EqualsIterator(""));
+			REQUIRE_THAT(split("abc", emptyStringRegex),
+						 EqualsIterator("", "", "", ""));
+			REQUIRE_THAT(split("abc", r {"\0"}),
+						 EqualsIterator("", "", "", ""));
 		}
 	}
 }

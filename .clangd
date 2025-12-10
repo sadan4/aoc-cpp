@@ -5,7 +5,7 @@ Diagnostics:
     FastCheckFilter: None
 CompileFlags:
   CompilationDatabase: ./dist
-  Remove: [-fvar-tracking, -fno-merge-debug-strings]
+  Remove: [-fvar-tracking, -fno-merge-debug-strings, -fsanitize=bounds-strict]
 Index:
   StandardLibrary: true
 Style:

@@ -6,7 +6,9 @@
 #include <iterator>
 #include <optional>
 #include <ranges>
+#include <regex>
 #include <string_view>
+#include <utility>
 
 namespace aoc::util::iter {
 	namespace detail {
@@ -91,6 +93,34 @@ namespace aoc::util::iter {
 						{.begin = begin, .end = begin + delimSize});
 				}
 				return std::nullopt;
+			}
+		};
+
+		class StringRegexSplitter final: public IStringSplitter {
+			std::regex regex;
+			std::regex_constants::match_flag_type flags;
+
+		  public:
+			explicit StringRegexSplitter(
+				std::regex regex, std::regex_constants::match_flag_type flags):
+				regex(std::move(regex)),
+				flags(flags) {
+			}
+
+			[[nodiscard]] std::optional<StringSplitResult>
+			split(std::string_view str) const override {
+				if (str.empty()) {
+					return std::nullopt;
+				}
+				std::cmatch match;
+				const auto begin = str.begin();
+				if (!std::regex_search(begin, str.end(), match, regex, flags)) {
+					return std::nullopt;
+				}
+				const auto matchStart = begin + match.position();
+				const auto matchEnd = matchStart + match.length();
+				return std::make_optional<StringSplitResult>(
+					{.begin = matchStart, .end = matchEnd});
 			}
 		};
 
@@ -218,5 +248,13 @@ namespace aoc::util::iter {
 									   std::string_view delimiter) noexcept {
 		return detail::SplitView {str,
 								  detail::StringStringSplitter {delimiter}};
+	}
+
+	[[nodiscard]] constexpr auto
+	split(std::string_view str, std::regex delimiter,
+		  std::regex_constants::match_flag_type flags =
+			  std::regex_constants::match_default) noexcept {
+		return detail::SplitView {
+			str, detail::StringRegexSplitter {std::move(delimiter), flags}};
 	}
 } // namespace aoc::util::iter

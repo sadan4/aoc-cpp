@@ -1,10 +1,13 @@
 #pragma once
 #include "types.hpp"
 
+#include <concepts>
+#include <cassert>
 #include <format>
 #include <limits>
 #include <stdexcept>
 #include <string_view>
+#include <utility>
 
 namespace aoc::util::math {
 	constexpr i8 sign(i8 val) {
@@ -128,20 +131,21 @@ namespace aoc::util::math {
 	}
 
 	// TODO: signed?
-	[[nodiscard]] constexpr u64 pow(u64 base, u64 power) {
-		u64 result = 1;
+	[[nodiscard]] constexpr u64 pow(u64 base, u32 power) {
+		if (power == 0) {
+			return 1;
+		}
+		u64 acc = 1;
 		while (true) {
-			if (power & 1) {
-				result *= base;
+			if ((power & 1) == 1) {
+				acc *= base;
+				if (power == 1) {
+					return acc;
+				}
 			}
 			power >>= 1;
-			if (!power) {
-				break;
-			}
 			base *= base;
 		}
-
-		return result;
 	}
 
 	[[nodiscard]] constexpr u64 base10ToU64(std::string_view str) {
@@ -160,5 +164,26 @@ namespace aoc::util::math {
 			mask *= 10;
 		}
 		return result;
+	}
+
+	[[nodiscard]] [[gnu::always_inline]] constexpr std::pair<u64, u64> divmod(u64 n, u64 divisor) {
+		return {n / divisor, n % divisor};
+	}
+
+	template <u64 divisor>
+	[[nodiscard]] [[gnu::always_inline]] constexpr std::pair<u64, u64> divmodConst(u64 n) {
+		return {n / divisor, n % divisor};
+	}
+
+	template<std::integral T>
+	[[nodiscard]] constexpr T clamp(auto min, auto val, auto max) {
+		assert(min <= max);
+		if (val < min) {
+			return min;
+		}
+		if (val > max) {
+			return max;
+		}
+		return val;
 	}
 } // namespace aoc::util::math
