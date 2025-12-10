@@ -117,8 +117,13 @@ namespace aoc::util::iter {
 				if (!std::regex_search(begin, str.end(), match, regex, flags)) {
 					return std::nullopt;
 				}
+				const auto matchLen = match.length();
 				const auto matchStart = begin + match.position();
 				const auto matchEnd = matchStart + match.length();
+				if (matchLen == 0) {
+					return std::make_optional<StringSplitResult>(
+						{.begin = matchEnd + 1, .end = matchEnd + 1});
+				}
 				return std::make_optional<StringSplitResult>(
 					{.begin = matchStart, .end = matchEnd});
 			}

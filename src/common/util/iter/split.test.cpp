@@ -155,12 +155,12 @@ TEST_CASE("util::iter::split") {
 			REQUIRE_THAT(split("abc", emptyRegex), EqualsIterator("abc"));
 			REQUIRE_THAT(split("", defaultJsRegex), EqualsIterator(""));
 			REQUIRE_THAT(split("abc", defaultJsRegex),
-						 EqualsIterator("", "", "", ""));
+						 EqualsIterator("a", "b", "c"));
 			REQUIRE_THAT(split("", emptyStringRegex), EqualsIterator(""));
 			REQUIRE_THAT(split("abc", emptyStringRegex),
-						 EqualsIterator("", "", "", ""));
+						 EqualsIterator("a", "b", "c"));
 			REQUIRE_THAT(split("abc", r {"\0"}),
-						 EqualsIterator("", "", "", ""));
+						 EqualsIterator("a", "b", "c"));
 		}
 	}
 }
