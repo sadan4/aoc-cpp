@@ -115,7 +115,8 @@ namespace aoc::util::iter {
 				if (str.empty()) {
 					return std::nullopt;
 				}
-				std::cmatch match;
+				// dumb msvc uses custom iterator types instead of const char*
+				std::match_results<std::string_view::const_iterator> match;
 				const auto begin = str.begin();
 				if (!std::regex_search(begin, str.end(), match, regex, flags)) {
 					return std::nullopt;
