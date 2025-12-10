@@ -186,9 +186,11 @@ class Day${dayStr} : public aoc::Base {
     }
 };
 
-int main() {
+int main(i32 argc, char* argv[]) {
     Day${dayStr} solution;
     
+    solution.parseCLI(argc, argv);
+
     solution.run();
     
     return 0;
