@@ -1,5 +1,8 @@
 #pragma once
 
+#include "common/deps/ctre-unicode.hpp"
+#include "common/util/string/split.hpp"
+
 #include <cassert>
 #include <concepts>
 #include <cstddef>
@@ -120,6 +123,41 @@ namespace aoc::util::iter {
 				const auto matchLen = match.length();
 				const auto matchStart = begin + match.position();
 				const auto matchEnd = matchStart + match.length();
+				if (matchLen == 0) {
+					return std::make_optional<StringSplitResult>(
+						{.begin = matchEnd + 1, .end = matchEnd + 1});
+				}
+				return std::make_optional<StringSplitResult>(
+					{.begin = matchStart, .end = matchEnd});
+			}
+		};
+
+		template<string::CTRERegex T>
+		class StringCTRESplitter final: public IStringSplitter {
+			using TMatch =
+				ctre::regex_results<std::string_view::const_iterator>;
+			T delimiter;
+
+		  public:
+			explicit StringCTRESplitter(T delimiter):
+				delimiter(delimiter) {
+			}
+
+			[[nodiscard]] std::optional<StringSplitResult>
+			split(std::string_view str) const override {
+				if (str.empty()) {
+					return std::nullopt;
+				}
+
+				const auto begin = str.begin();
+				const auto end = str.end();
+				const TMatch match = delimiter(begin, end);
+				if (!match) {
+					return std::nullopt;
+				}
+				const auto matchLen = match.size();
+				const auto matchStart = match.begin();
+				const auto matchEnd = matchStart + matchLen;
 				if (matchLen == 0) {
 					return std::make_optional<StringSplitResult>(
 						{.begin = matchEnd + 1, .end = matchEnd + 1});
@@ -261,5 +299,11 @@ namespace aoc::util::iter {
 			  std::regex_constants::match_default) noexcept {
 		return detail::SplitView {
 			str, detail::StringRegexSplitter {std::move(delimiter), flags}};
+	}
+
+	template<string::CTRERegex T>
+	[[nodiscard]] constexpr auto split(std::string_view str,
+									   T delimiter) noexcept {
+		return detail::SplitView {str, detail::StringCTRESplitter {delimiter}};
 	}
 } // namespace aoc::util::iter

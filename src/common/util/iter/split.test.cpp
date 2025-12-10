@@ -1,6 +1,7 @@
 #include "split.hpp"
 
 #include "catch2/matchers/catch_matchers.hpp"
+#include "common/deps/ctre-unicode.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_templated.hpp>
@@ -159,8 +160,27 @@ TEST_CASE("util::iter::split") {
 			REQUIRE_THAT(split("", emptyStringRegex), EqualsIterator(""));
 			REQUIRE_THAT(split("abc", emptyStringRegex),
 						 EqualsIterator("a", "b", "c"));
-			REQUIRE_THAT(split("abc", r {"\0"}),
-						 EqualsIterator("a", "b", "c"));
+			REQUIRE_THAT(split("abc", r {"\0"}), EqualsIterator("a", "b", "c"));
 		}
+	}
+	SECTION("split(std::string_view, CTRE regex") {
+		constexpr static auto dashRegex = ctre::search<"-">;
+		REQUIRE_THAT(split("abc", ctre::search<"b">), EqualsIterator("a", "c"));
+		REQUIRE_THAT(split("a--b--c--d", dashRegex),
+					 EqualsIterator("a", "", "b", "", "c", "", "d"));
+		REQUIRE_THAT(split("a", ctre::search<"a">), EqualsIterator("", ""));
+		REQUIRE_THAT(split("a-b-c", dashRegex), EqualsIterator("a", "b", "c"));
+		REQUIRE_THAT(split("-a-b-c-", dashRegex),
+					 EqualsIterator("", "a", "b", "c", ""));
+		REQUIRE_THAT(split("a-b-c-", dashRegex),
+					 EqualsIterator("a", "b", "c", ""));
+		REQUIRE_THAT(split("-a-b-c", dashRegex),
+					 EqualsIterator("", "a", "b", "c"));
+		REQUIRE_THAT(split("--a--b--c--", dashRegex),
+					 EqualsIterator("", "", "a", "", "b", "", "c", "", ""));
+		REQUIRE_THAT(split("a--b--c--", dashRegex),
+					 EqualsIterator("a", "", "b", "", "c", "", ""));
+		REQUIRE_THAT(split("--a--b--c", dashRegex),
+					 EqualsIterator("", "", "a", "", "b", "", "c"));
 	}
 }
