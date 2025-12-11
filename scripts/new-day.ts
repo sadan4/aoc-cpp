@@ -152,10 +152,14 @@ async function createDayBoilerplate(day: number, year: number): Promise<void> {
   console.log(`Created day directory: ${dayDir}`);
 
   // Create main.cpp
-  const mainCppContent = `#include <iostream>
-#include "common/Base.hpp"
+  const mainCppContent = `#include "common/Base.hpp"
+#include "common/util/types.hpp"
 
-class Day${dayStr} : public aoc::Base {
+#include <optional>
+#include <string>
+#include <string_view>
+
+class Day${dayStr} final: public aoc::Base {
   public:
     Day${dayStr}() = default;
     

@@ -25,7 +25,10 @@ namespace aoc::util::iter {
 
 		  private:
 			T init;
-			F func;
+			/**
+			 * support mutable lambdas
+			 */
+			mutable F func;
 		};
 	} // namespace detail
 
