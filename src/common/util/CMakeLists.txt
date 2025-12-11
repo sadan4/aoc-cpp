@@ -1,3 +1,5 @@
+add_subdirectory(2d)
+add_subdirectory(debug)
 add_subdirectory(iter)
 add_subdirectory(string)
 target_sources(

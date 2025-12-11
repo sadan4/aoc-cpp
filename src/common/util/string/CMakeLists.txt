@@ -1,10 +1,12 @@
 target_sources(common
     PUBLIC
+    pad.hpp
     split.hpp
     trim.hpp
 )
 target_sources(test
     PUBLIC
+    pad.test.cpp
     split.test.cpp
     trim.test.cpp
 )

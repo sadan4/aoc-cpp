@@ -1,12 +1,19 @@
 target_sources(common
     PUBLIC
+    all.hpp
+    any.hpp
     filter.hpp
+    flat.hpp
     flatMap.hpp
     fold.hpp
     iota.hpp
+    joinToString.hpp
     map.hpp
+    none.hpp
     split.hpp
     sum.hpp
+    take.hpp
+    tap.hpp
 )
 
 target_sources(test
