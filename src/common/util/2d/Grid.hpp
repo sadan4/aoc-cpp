@@ -105,6 +105,8 @@ namespace aoc::util::dd {
 
 #pragma endregion
 
+#pragma region debugging
+
 		[[nodiscard]] constexpr std::string toString() const {
 			return data | iter::map([](const auto& row) {
 					   u8 longest = 0;
@@ -122,5 +124,7 @@ namespace aoc::util::dd {
 				   })
 				   | iter::joinToString("\n");
 		}
+
+#pragma endregion
 	};
 }; // namespace aoc::util::dd
