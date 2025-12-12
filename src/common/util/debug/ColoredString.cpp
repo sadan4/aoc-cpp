@@ -9,22 +9,22 @@
 
 namespace aoc::util::debug {
 	ColoredStringBuilder&
-	ColoredStringBuilder::setForegroundColor(const Color& color) & {
+	ColoredStringBuilder::setForegroundColor(const Color& color) {
 		return addCode(
 			TerminalCode::SET_FOREGROUND_COLOR, 2, color.r, color.g, color.b);
 	}
 
 	ColoredStringBuilder&
-	ColoredStringBuilder::setBackgroundColor(const Color& color) & {
+	ColoredStringBuilder::setBackgroundColor(const Color& color) {
 		return addCode(
 			TerminalCode::SET_BACKGROUND_COLOR, 2, color.r, color.g, color.b);
 	}
 
 	std::string ColoredStringBuilder::build() const& {
-		return std::format("\u001b[{}m"
+		return std::format("\033[{}m"
 						   "{}"
-						   "\u001b[{}m",
-						   prefix | iter::map(into<std::string>)
+						   "\033[{}m",
+						   prefix | iter::map(to<std::string>)
 							   | iter::joinToString(";"),
 						   str,
 						   toUnderlying(TerminalCode::RESET));

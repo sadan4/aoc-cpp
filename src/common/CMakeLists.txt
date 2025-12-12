@@ -1,5 +1,8 @@
 # Common utilities library
 add_library(common STATIC)
+target_compile_options(common PUBLIC
+  -Wno-missing-field-initializers
+)
 target_sources(
     common
     PUBLIC

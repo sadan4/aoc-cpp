@@ -27,18 +27,18 @@ namespace aoc::util::debug {
 
 		template<typename... Codes>
 		requires(sizeof...(Codes) >= 1)
-		[[nodiscard]] ColoredStringBuilder& addCode(Codes... codes) & {
+		ColoredStringBuilder& addCode(Codes... codes) {
 			(...,
 			 prefix.push_back(overloaded(identity<u8>, toUnderlying)(codes)));
 			return *this;
 		};
 
-		[[nodiscard]] ColoredStringBuilder&
-		setForegroundColor(const Color& color) &;
-		[[nodiscard]] ColoredStringBuilder&
-		setBackgroundColor(const Color& color) &;
+		ColoredStringBuilder&
+		setForegroundColor(const Color& color);
+		ColoredStringBuilder&
+		setBackgroundColor(const Color& color);
 
 		[[nodiscard]] std::string build() const&;
-		explicit operator std::string() const&;
+		[[nodiscard]] explicit operator std::string() const&;
 	};
 } // namespace aoc::util::debug

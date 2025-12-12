@@ -24,12 +24,12 @@ namespace aoc::util::iter {
 			JoinToStringOpts opts;
 
 			template<std::ranges::range R>
-			requires requires(std::string s, R r) {
-				{ s += auto{r} } -> std::same_as<std::string&>;
+			requires requires(std::string s, std::ranges::range_value_t<R> r) {
+				{ s += auto {r} } -> std::same_as<std::string&>;
 			}
-			std::string operator()(const R& range) const {
+			constexpr std::string operator()(R&& range) const {
 				std::string out {opts.prefix};
-				for (const auto& item : range | take(opts.limit)) {
+				for (const auto& item : std::forward<R>(range) | take(opts.limit)) {
 					out += auto {item};
 					out += auto {opts.separator};
 				}
@@ -39,6 +39,15 @@ namespace aoc::util::iter {
 				out += auto {opts.suffix};
 
 				return out;
+			}
+
+			template<std::ranges::range R>
+			requires requires(std::string s, std::ranges::range_value_t<R> r) {
+				{ s += auto {r} } -> std::same_as<std::string&>;
+			}
+			[[nodiscard]] constexpr friend std::string
+			operator|(R&& range, const JoinToStringAdapter& adapter) {
+				return adapter(std::forward<R>(range));
 			}
 		};
 	} // namespace detail

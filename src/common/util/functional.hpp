@@ -31,7 +31,7 @@ namespace aoc::util {
 		};
 
 		template<typename T>
-		struct IntoImpl {
+		struct ToImpl {
 			template<typename... Args>
 			requires std::is_constructible_v<T, Args...>
 			T operator()(Args&&... args) const {
@@ -46,7 +46,7 @@ namespace aoc::util {
 		};
 
 		template<>
-		struct IntoImpl<std::string> {
+		struct ToImpl<std::string> {
 		  private:
 			using T = std::string;
 
@@ -91,5 +91,5 @@ namespace aoc::util {
 	inline constexpr detail::ToUnderlying toUnderlying;
 
 	template<typename T>
-	inline constexpr detail::IntoImpl<T> into;
+	inline constexpr detail::ToImpl<T> to;
 } // namespace aoc::util

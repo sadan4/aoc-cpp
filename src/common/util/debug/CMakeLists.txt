@@ -4,3 +4,8 @@ target_sources(common
     ColoredString.hpp
     TerminalCode.hpp
 )
+
+target_sources(test
+    PRIVATE
+    ColoredString.test.cpp
+)
